@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace HousePlantMeasurementsApi.Data.Entities
 {
     [Table("PlantImages")]
-    public class PlantImage
+    public class PlantImage: BaseEntity
     {
         [Required]
         public string ImageName { get; set; }
