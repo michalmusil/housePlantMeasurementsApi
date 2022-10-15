@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/michalmusil/MENDELU/Bakalarka/SledovaniCharakteristikProstrediPokojovychRostlin/Code/HousePlantMeasurementsApi/HousePlantMeasurementsApi/HousePlantMeasurementsApi.csproj": {}
+    "/Users/michalmusil/MENDELU/Bakalarka/SledovaniCharakteristikProstrediPokojovychRostlin/Code/housePlantMeasurementsApi/HousePlantMeasurementsApi/HousePlantMeasurementsApi.csproj": {}
   },
   "projects": {
-    "/Users/michalmusil/MENDELU/Bakalarka/SledovaniCharakteristikProstrediPokojovychRostlin/Code/HousePlantMeasurementsApi/HousePlantMeasurementsApi/HousePlantMeasurementsApi.csproj": {
+    "/Users/michalmusil/MENDELU/Bakalarka/SledovaniCharakteristikProstrediPokojovychRostlin/Code/housePlantMeasurementsApi/HousePlantMeasurementsApi/HousePlantMeasurementsApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/michalmusil/MENDELU/Bakalarka/SledovaniCharakteristikProstrediPokojovychRostlin/Code/HousePlantMeasurementsApi/HousePlantMeasurementsApi/HousePlantMeasurementsApi.csproj",
+        "projectUniqueName": "/Users/michalmusil/MENDELU/Bakalarka/SledovaniCharakteristikProstrediPokojovychRostlin/Code/housePlantMeasurementsApi/HousePlantMeasurementsApi/HousePlantMeasurementsApi.csproj",
         "projectName": "HousePlantMeasurementsApi",
-        "projectPath": "/Users/michalmusil/MENDELU/Bakalarka/SledovaniCharakteristikProstrediPokojovychRostlin/Code/HousePlantMeasurementsApi/HousePlantMeasurementsApi/HousePlantMeasurementsApi.csproj",
+        "projectPath": "/Users/michalmusil/MENDELU/Bakalarka/SledovaniCharakteristikProstrediPokojovychRostlin/Code/housePlantMeasurementsApi/HousePlantMeasurementsApi/HousePlantMeasurementsApi.csproj",
         "packagesPath": "/Users/michalmusil/.nuget/packages/",
-        "outputPath": "/Users/michalmusil/MENDELU/Bakalarka/SledovaniCharakteristikProstrediPokojovychRostlin/Code/HousePlantMeasurementsApi/HousePlantMeasurementsApi/obj/",
+        "outputPath": "/Users/michalmusil/MENDELU/Bakalarka/SledovaniCharakteristikProstrediPokojovychRostlin/Code/housePlantMeasurementsApi/HousePlantMeasurementsApi/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/michalmusil/.nuget/NuGet/NuGet.Config"
@@ -38,6 +38,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.10, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[6.0.10, )"
