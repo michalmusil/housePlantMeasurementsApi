@@ -10,6 +10,7 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("72a54450-2a0f-449f-9af0-2a9fdbc59afb")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("HousePlantMeasurementsApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]

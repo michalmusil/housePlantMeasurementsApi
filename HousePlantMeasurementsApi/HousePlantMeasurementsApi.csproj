@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>72a54450-2a0f-449f-9af0-2a9fdbc59afb</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +20,8 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.10" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,9 +32,23 @@
     <None Remove="db_data\" />
     <None Remove="Database\Entities\" />
     <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+    <None Remove="Repositories\" />
+    <None Remove="DTOs\" />
+    <None Remove="DTOs\User\" />
+    <None Remove="Repositories\Users\" />
+    <None Remove="Automapper\" />
+    <None Remove="Automapper\Profiles\" />
+    <None Remove="BCrypt.Net-Next" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="db_data\" />
     <Folder Include="Data\Entities\" />
+    <Folder Include="Repositories\" />
+    <Folder Include="DTOs\" />
+    <Folder Include="DTOs\User\" />
+    <Folder Include="Repositories\Users\" />
+    <Folder Include="Automapper\" />
+    <Folder Include="Automapper\Profiles\" />
   </ItemGroup>
 </Project>

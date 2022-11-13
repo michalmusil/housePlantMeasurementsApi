@@ -8,8 +8,8 @@ namespace HousePlantMeasurementsApi.Data.Entities
     public class User: BaseEntity
     {
         [Required]
-        [MinLength(6)]
-        [MaxLength(400)]
+        [EmailAddress]
+        [MaxLength(500)]
         public string Email { get; set; }
         
         [Required]

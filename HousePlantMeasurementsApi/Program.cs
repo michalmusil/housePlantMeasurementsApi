@@ -1,4 +1,5 @@
 ﻿using HousePlantMeasurementsApi.Data;
+using HousePlantMeasurementsApi.Repositories.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -56,6 +57,19 @@ builder.Services.AddDbContext<PlantMeasurementsDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("PlantMeasurementsDatabase"));
 });
+
+// Add Automapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+
+
+// Dependency injection
+builder.Services.AddScoped<IUsersRepository, UsersDbRepository>();
+
+
+
+
+
 
 
 var app = builder.Build();

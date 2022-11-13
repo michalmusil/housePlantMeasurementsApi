@@ -1,36 +1,17 @@
 ﻿<Properties StartupConfiguration="{C5E3879F-A91D-415A-AFD4-6ADC3D077C28}|Default">
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.ItemProperties.HousePlantMeasurementsApi PreferredExecutionTarget="/Applications/Firefox.app" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/Data/Entities/Plant.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/Controllers/AuthController.cs">
     <Files>
-      <File FileName="HousePlantMeasurementsApi/Program.cs" Line="69" Column="1" />
-      <File FileName="HousePlantMeasurementsApi/Data/PlantMeasurementsDbContext.cs" Line="20" Column="1" />
-      <File FileName="HousePlantMeasurementsApi/appsettings.json" Line="19" Column="31" />
-      <File FileName="HousePlantMeasurementsApi/appsettings.Development.json" Line="10" Column="31" />
-      <File FileName="HousePlantMeasurementsApi/Controllers/WeatherForecastController.cs" Line="8" Column="74" />
-      <File FileName="HousePlantMeasurementsApi/Data/Entities/BaseEntity.cs" Line="13" Column="1" />
-      <File FileName="HousePlantMeasurementsApi/Data/Entities/User.cs" Line="12" Column="23" />
-      <File FileName="HousePlantMeasurementsApi/Data/Entities/Device.cs" Line="1" Column="1" />
-      <File FileName="HousePlantMeasurementsApi/Data/Entities/Measurement.cs" Line="1" Column="1" />
-      <File FileName="HousePlantMeasurementsApi/Data/Entities/Plant.cs" Line="29" Column="1" />
+      <File FileName="HousePlantMeasurementsApi/Program.cs" Line="41" Column="38" />
+      <File FileName="HousePlantMeasurementsApi/Migrations/20221015212841_InitialMigration.cs" Line="167" Column="40" />
+      <File FileName="HousePlantMeasurementsApi/Controllers/AuthController.cs" Line="23" Column="40" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="HousePlantMeasurementsApi" expanded="True">
             <Node name="HousePlantMeasurementsApi" expanded="True">
-              <Node name="Dependencies" expanded="True" />
               <Node name="Controllers" expanded="True" />
-              <Node name="Data" expanded="True">
-                <Node name="Entities" expanded="True">
-                  <Node name="Plant.cs" selected="True" />
-                </Node>
-              </Node>
               <Node name="appsettings.json" expanded="True" />
             </Node>
           </Node>
@@ -41,4 +22,10 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.HousePlantMeasurementsApi PreferredExecutionTarget="/Applications/Firefox.app" />
 </Properties>

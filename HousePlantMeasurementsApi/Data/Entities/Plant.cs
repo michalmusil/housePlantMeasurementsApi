@@ -11,7 +11,7 @@ namespace HousePlantMeasurementsApi.Data.Entities
         public string Name { get; set; }
         [Required]
         public string Species { get; set; }
-        public string? Describtion { get; set; }
+        public string? Description { get; set; }
 
         public double? MoistureLowLimit { get; set; }
         public double? MoistureHighLimit { get; set; }
