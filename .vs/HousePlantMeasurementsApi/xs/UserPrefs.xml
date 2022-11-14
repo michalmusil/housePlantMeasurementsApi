@@ -1,15 +1,17 @@
 ﻿<Properties StartupConfiguration="{C5E3879F-A91D-415A-AFD4-6ADC3D077C28}|Default">
+  <MonoDevelop.Ide.ItemProperties.HousePlantMeasurementsApi PreferredExecutionTarget="/Applications/Firefox.app" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/Controllers/UsersController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/Services/AuthService/AuthService.cs">
     <Files>
-      <File FileName="HousePlantMeasurementsApi/Controllers/AuthController.cs" Line="28" Column="21" />
-      <File FileName="HousePlantMeasurementsApi/Controllers/UsersController.cs" Line="56" Column="1" />
-      <File FileName="HousePlantMeasurementsApi/Program.cs" Line="64" Column="32" />
+      <File FileName="HousePlantMeasurementsApi/Program.cs" Line="107" Column="1" />
+      <File FileName="HousePlantMeasurementsApi/Controllers/PlantsController.cs" Line="45" Column="94" />
+      <File FileName="HousePlantMeasurementsApi/Controllers/UsersController.cs" Line="157" Column="1" />
+      <File FileName="HousePlantMeasurementsApi/Services/AuthService/IAuthService.cs" Line="20" Column="9" />
+      <File FileName="HousePlantMeasurementsApi/Services/AuthService/AuthService.cs" Line="104" Column="16" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,7 +22,6 @@
               <Node name="Services" expanded="True">
                 <Node name="AuthService" expanded="True" />
               </Node>
-              <Node name="appsettings.json" expanded="True" />
             </Node>
           </Node>
         </State>
@@ -30,5 +31,5 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.ItemProperties.HousePlantMeasurementsApi PreferredExecutionTarget="/Applications/Firefox.app" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>

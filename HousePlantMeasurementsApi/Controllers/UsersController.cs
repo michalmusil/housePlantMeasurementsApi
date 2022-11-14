@@ -38,17 +38,30 @@ namespace HousePlantMeasurementsApi.Controllers
 
 
 
-        [HttpGet(Name = "List")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<GetUserDto>>> UsersList()
         {
+            if (!await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin))
+            {
+                return Unauthorized(new { message = "Endpoint accessible for admin users only" });
+            }
+
             var users = await usersRepository.GetAllUsers();
 
             return Ok(mapper.Map<IEnumerable<GetUserDto>>(users));
         }
 
-        [HttpGet("{id}", Name = "GetById")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<GetUserDto>> GetById(int id)
         {
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var asksForHimself = await authService.SignedUserHasId(HttpContext.User, id);
+
+            if (!isAdmin && !asksForHimself)
+            {
+                return Unauthorized();
+            }
+
             var user = await usersRepository.GetById(id);
 
             if (user == null)
@@ -60,7 +73,7 @@ namespace HousePlantMeasurementsApi.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("register", Name = "Register")]
+        [HttpPost("register")]
         public async Task<ActionResult<GetUserDto>> Register(PostUserDto userPost)
         {
             var alreadyExistingUser = await usersRepository.GetByEmail(userPost.Email);
@@ -87,18 +100,18 @@ namespace HousePlantMeasurementsApi.Controllers
             return Ok(mapper.Map<GetUserDto>(newUser));
         }
 
-        [HttpPut(Name = "Update")]
+        [HttpPut]
         public async Task<ActionResult<GetUserDto>> UpdateUser(PutUserDto userPut)
         {
             var userToUpdate = await usersRepository.GetById(userPut.Id);
-            var signedUserId = await authService.GetUserIdFromClaims(HttpContext.User.Claims);
-            var signedUserRole = await authService.GetUserRole(signedUserId ?? -1);
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var asksForHimself = await authService.SignedUserHasId(HttpContext.User, userPut.Id);
 
             if (userToUpdate == null)
             {
                 return NotFound();
             }
-            if (userToUpdate.Id != signedUserId && signedUserRole != UserRole.Admin)
+            if (!asksForHimself && !isAdmin)
             {
                 return Unauthorized(new { message = "Non-admin users can only update their own information" });
             }
@@ -107,7 +120,7 @@ namespace HousePlantMeasurementsApi.Controllers
             // Catching if non-admin user tries to change his own role - not allowed
             if (userPut.Role == UserRole.User || userPut.Role == UserRole.Admin)
             {
-                if (signedUserRole != UserRole.Admin)
+                if (!isAdmin)
                 {
                     return Unauthorized(new { message = "Only admin can update users roles" });
                 }
@@ -136,9 +149,17 @@ namespace HousePlantMeasurementsApi.Controllers
 
         }
 
-        [HttpDelete("{id}", Name = "Delete")]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(int id)
         {
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var asksForHimself = await authService.SignedUserHasId(HttpContext.User, id);
+
+            if (!isAdmin && !asksForHimself)
+            {
+                return Unauthorized(new { message = "Non-admin users can only delete their own account" });
+            }
+
             User? userToDelete = await usersRepository.GetById(id);
             if (userToDelete == null)
             {

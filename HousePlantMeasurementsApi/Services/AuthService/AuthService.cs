@@ -40,7 +40,6 @@ namespace HousePlantMeasurementsApi.Services.AuthService
             return null;
         }
 
-
         public async Task<GetAuthDto> LogUserIn(User user)
         {
             var appJwtSection = appConfiguration.GetSection("Jwt");
@@ -67,7 +66,24 @@ namespace HousePlantMeasurementsApi.Services.AuthService
         }
 
 
-        public async Task<int?> GetUserIdFromClaims(IEnumerable<Claim> claims)
+
+        public async Task<bool> SignedUserHasRole(ClaimsPrincipal? user, UserRole role)
+        {
+            var signedUserId = await GetUserIdFromClaims(user.Claims);
+            var signedUserRole = await GetUserRole(signedUserId ?? -1);
+
+            return signedUserRole == role;
+        }
+
+        public async Task<bool> SignedUserHasId(ClaimsPrincipal? user, int id)
+        {
+            return await GetUserIdFromClaims(user.Claims) == id;
+        }
+
+
+
+
+        private async Task<int?> GetUserIdFromClaims(IEnumerable<Claim> claims)
         {
             var signedUserClaim = claims.Where(c => c.Type == "userId").FirstOrDefault();
             if (signedUserClaim == null)
@@ -85,7 +101,7 @@ namespace HousePlantMeasurementsApi.Services.AuthService
             }
         }
 
-        public async Task<UserRole?> GetUserRole(int userId)
+        private async Task<UserRole?> GetUserRole(int userId)
         {
             var foundUser = await usersRepository.GetById(userId);
             if (foundUser == null)

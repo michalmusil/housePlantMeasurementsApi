@@ -14,9 +14,10 @@ namespace HousePlantMeasurementsApi.Services.AuthService
 
         public Task<GetAuthDto> LogUserIn(User user);
 
-        public Task<int?> GetUserIdFromClaims(IEnumerable<Claim> claims);
+        public Task<bool> SignedUserHasRole(ClaimsPrincipal? user, UserRole role);
 
-        public Task<UserRole?> GetUserRole(int userId);
+        public Task<bool> SignedUserHasId(ClaimsPrincipal? user, int id);
+        
     }
 }
 
