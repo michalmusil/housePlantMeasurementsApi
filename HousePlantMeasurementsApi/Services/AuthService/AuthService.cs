@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using HousePlantMeasurementsApi.Data.Entities;
+using HousePlantMeasurementsApi.Data.Enums;
 using HousePlantMeasurementsApi.DTOs.Auth;
 using HousePlantMeasurementsApi.DTOs.User;
 using HousePlantMeasurementsApi.Repositories.Users;
@@ -63,6 +64,35 @@ namespace HousePlantMeasurementsApi.Services.AuthService
 
             return new GetAuthDto() { Id = user.Id, Token = tokenString };
 
+        }
+
+
+        public async Task<int?> GetUserIdFromClaims(IEnumerable<Claim> claims)
+        {
+            var signedUserClaim = claims.Where(c => c.Type == "userId").FirstOrDefault();
+            if (signedUserClaim == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                return Int32.Parse(signedUserClaim.Value);
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public async Task<UserRole?> GetUserRole(int userId)
+        {
+            var foundUser = await usersRepository.GetById(userId);
+            if (foundUser == null)
+            {
+                return null;
+            }
+            return foundUser.Role;
         }
 
         

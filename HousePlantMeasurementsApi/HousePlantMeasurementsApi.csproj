@@ -44,6 +44,8 @@
     <None Remove="Services\AuthService\" />
     <None Remove="DTOs\Auth\" />
     <None Remove="Repositories\Plants\" />
+    <None Remove="DTOs\Plant\" />
+    <None Remove="Data\Enums\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="db_data\" />
@@ -58,5 +60,7 @@
     <Folder Include="Services\AuthService\" />
     <Folder Include="DTOs\Auth\" />
     <Folder Include="Repositories\Plants\" />
+    <Folder Include="DTOs\Plant\" />
+    <Folder Include="Data\Enums\" />
   </ItemGroup>
 </Project>

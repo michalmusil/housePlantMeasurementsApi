@@ -37,6 +37,7 @@ namespace HousePlantMeasurementsApi.Repositories.Plants
 
         public async Task<bool> UpdatePlant(Plant plant)
         {
+            plant.Updated = DateTime.UtcNow;
             dbContext.Update(plant);
             return await dbContext.SaveChangesAsync() > 0;
         }

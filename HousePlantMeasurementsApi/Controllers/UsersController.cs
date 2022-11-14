@@ -1,9 +1,11 @@
 ﻿using System;
 using AutoMapper;
 using HousePlantMeasurementsApi.Data.Entities;
+using HousePlantMeasurementsApi.Data.Enums;
 using HousePlantMeasurementsApi.DTOs;
 using HousePlantMeasurementsApi.DTOs.User;
 using HousePlantMeasurementsApi.Repositories.Users;
+using HousePlantMeasurementsApi.Services.AuthService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,17 +17,21 @@ namespace HousePlantMeasurementsApi.Controllers
     [Route("/api/v1/users")]
     public class UsersController : ControllerBase
     {
-        public IConfiguration appConfiguration { get; set; }
         private readonly ILogger logger;
         private readonly IMapper mapper;
         private readonly IUsersRepository usersRepository;
+        private readonly IAuthService authService;
 
-        public UsersController(IConfiguration configuration, ILogger<AuthController> logger, IMapper mapper, IUsersRepository usersRepository)
+        public UsersController(
+            ILogger<AuthController> logger,
+            IMapper mapper,
+            IUsersRepository usersRepository,
+            IAuthService authService)
         {
-            this.appConfiguration = configuration;
             this.logger = logger;
             this.mapper = mapper;
             this.usersRepository = usersRepository;
+            this.authService = authService;
         }
 
 
@@ -61,7 +67,7 @@ namespace HousePlantMeasurementsApi.Controllers
 
             if (alreadyExistingUser != null)
             {
-                return Conflict();
+                return Conflict(new { message = "User with this email already exists" });
             }
 
             User? newUser = null;
@@ -84,14 +90,39 @@ namespace HousePlantMeasurementsApi.Controllers
         [HttpPut(Name = "Update")]
         public async Task<ActionResult<GetUserDto>> UpdateUser(PutUserDto userPut)
         {
-            User? userToUpdate = await usersRepository.GetById(userPut.Id);
+            var userToUpdate = await usersRepository.GetById(userPut.Id);
+            var signedUserId = await authService.GetUserIdFromClaims(HttpContext.User.Claims);
+            var signedUserRole = await authService.GetUserRole(signedUserId ?? -1);
+
             if (userToUpdate == null)
             {
                 return NotFound();
             }
+            if (userToUpdate.Id != signedUserId && signedUserRole != UserRole.Admin)
+            {
+                return Unauthorized(new { message = "Non-admin users can only update their own information" });
+            }
+
+
+            // Catching if non-admin user tries to change his own role - not allowed
+            if (userPut.Role == UserRole.User || userPut.Role == UserRole.Admin)
+            {
+                if (signedUserRole != UserRole.Admin)
+                {
+                    return Unauthorized(new { message = "Only admin can update users roles" });
+                }
+
+                userToUpdate.Role = userPut.Role ?? userToUpdate.Role;
+            }
 
             if (userPut.Email != null && userPut.Email.Length > 0)
             {
+                var existingUser = await usersRepository.GetByEmail(userPut.Email);
+                if (existingUser != null)
+                {
+                    return Conflict(new { message = "User with this email already exists" });
+                }
+
                 userToUpdate.Email = userPut.Email;
             }
             if (userPut.Password != null && userPut.Password.Length > 0)
@@ -119,5 +150,5 @@ namespace HousePlantMeasurementsApi.Controllers
             return Ok();
         }
     }
-}
 
+}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using HousePlantMeasurementsApi.Data.Enums;
 
 namespace HousePlantMeasurementsApi.Data.Entities
 {
@@ -14,6 +15,9 @@ namespace HousePlantMeasurementsApi.Data.Entities
         
         [Required]
         public string Password { get; set; }
+
+        [Required]
+        public UserRole Role { get; set; }
 
         List<Plant> Plants { get; set; }
         List<Device> Devices { get; set; }
