@@ -1,10 +1,15 @@
 ﻿<Properties StartupConfiguration="{C5E3879F-A91D-415A-AFD4-6ADC3D077C28}|Default">
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/Controllers/AuthController.cs">
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/Controllers/UsersController.cs">
     <Files>
-      <File FileName="HousePlantMeasurementsApi/Program.cs" Line="41" Column="38" />
-      <File FileName="HousePlantMeasurementsApi/Migrations/20221015212841_InitialMigration.cs" Line="167" Column="40" />
-      <File FileName="HousePlantMeasurementsApi/Controllers/AuthController.cs" Line="23" Column="40" />
+      <File FileName="HousePlantMeasurementsApi/Controllers/AuthController.cs" Line="28" Column="21" />
+      <File FileName="HousePlantMeasurementsApi/Controllers/UsersController.cs" Line="56" Column="1" />
+      <File FileName="HousePlantMeasurementsApi/Program.cs" Line="64" Column="32" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -12,6 +17,9 @@
           <Node name="HousePlantMeasurementsApi" expanded="True">
             <Node name="HousePlantMeasurementsApi" expanded="True">
               <Node name="Controllers" expanded="True" />
+              <Node name="Services" expanded="True">
+                <Node name="AuthService" expanded="True" />
+              </Node>
               <Node name="appsettings.json" expanded="True" />
             </Node>
           </Node>
@@ -22,10 +30,5 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.ItemProperties.HousePlantMeasurementsApi PreferredExecutionTarget="/Applications/Firefox.app" />
 </Properties>

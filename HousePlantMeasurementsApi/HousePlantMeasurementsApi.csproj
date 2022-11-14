@@ -40,6 +40,9 @@
     <None Remove="Automapper\" />
     <None Remove="Automapper\Profiles\" />
     <None Remove="BCrypt.Net-Next" />
+    <None Remove="Services\" />
+    <None Remove="Services\AuthService\" />
+    <None Remove="DTOs\Auth\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="db_data\" />
@@ -50,5 +53,8 @@
     <Folder Include="Repositories\Users\" />
     <Folder Include="Automapper\" />
     <Folder Include="Automapper\Profiles\" />
+    <Folder Include="Services\" />
+    <Folder Include="Services\AuthService\" />
+    <Folder Include="DTOs\Auth\" />
   </ItemGroup>
 </Project>

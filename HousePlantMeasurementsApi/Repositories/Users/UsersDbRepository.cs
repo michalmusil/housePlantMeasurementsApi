@@ -29,6 +29,14 @@ namespace HousePlantMeasurementsApi.Repositories.Users
             return user;
         }
 
+        public async Task<User> GetByEmail(string email)
+        {
+            string emailLower = (email ?? "").ToLower();
+            var user = await DbContext.Users.Where(user => user.Email.ToLower() == emailLower).FirstOrDefaultAsync();
+
+            return user;
+        }
+
         public async Task<bool> AddUser(User user)
         {
             DbContext.Add(user);

@@ -1,5 +1,8 @@
 ﻿using System;
 using AutoMapper;
+using HousePlantMeasurementsApi.DTOs.Auth;
+using HousePlantMeasurementsApi.DTOs.User;
+using HousePlantMeasurementsApi.Services.AuthService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HousePlantMeasurementsApi.Controllers
@@ -8,21 +11,30 @@ namespace HousePlantMeasurementsApi.Controllers
     [Route("/api/v1/Auth")]
     public class AuthController: ControllerBase
     {
-        public IConfiguration AppConfiguration { get; set; }
-        private readonly ILogger Logger;
-        private readonly IMapper Mapper;
+        public IConfiguration appConfiguration { get; set; }
+        private readonly ILogger logger;
+        private readonly IMapper mapper;
+        private readonly IAuthService authService;
 
-        public AuthController(IConfiguration configuration, ILogger<AuthController> logger, IMapper mapper)
+        public AuthController(IConfiguration configuration, ILogger<AuthController> logger, IMapper mapper, IAuthService authService)
         {
-            this.AppConfiguration = configuration;
-            this.Logger = logger;
-            this.Mapper = mapper;
+            this.appConfiguration = configuration;
+            this.logger = logger;
+            this.mapper = mapper;
+            this.authService = authService;
         }
 
-        [HttpGet(Name = "Authenticate")]
-        public async Task<ActionResult> Authenticate()
+
+        [HttpPost("Login", Name = "LogIn")]
+        public async Task<ActionResult<GetAuthDto>> LogIn(PostUserLoginDto loginDto)
         {
-            return Ok("Odpoved probehla");
+            var user = await authService.GetUserWithCredentials(loginDto);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var token = await authService.LogUserIn(user);
+            return Ok(token);
         }
 
     }
