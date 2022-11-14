@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HousePlantMeasurementsApi.Controllers
 {
     [ApiController]
-    [Route("/api/v1/Auth")]
+    [Route("/api/v1/auth")]
     public class AuthController: ControllerBase
     {
         public IConfiguration appConfiguration { get; set; }
@@ -25,7 +25,7 @@ namespace HousePlantMeasurementsApi.Controllers
         }
 
 
-        [HttpPost("Login", Name = "LogIn")]
+        [HttpPost("login", Name = "Login")]
         public async Task<ActionResult<GetAuthDto>> LogIn(PostUserLoginDto loginDto)
         {
             var user = await authService.GetUserWithCredentials(loginDto);

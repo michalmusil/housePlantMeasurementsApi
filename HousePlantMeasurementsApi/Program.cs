@@ -1,4 +1,5 @@
 ﻿using HousePlantMeasurementsApi.Data;
+using HousePlantMeasurementsApi.Repositories.Plants;
 using HousePlantMeasurementsApi.Repositories.Users;
 using HousePlantMeasurementsApi.Services.AuthService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -81,9 +82,9 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
 // Dependency injection
-builder.Services.AddScoped<IUsersRepository, UsersDbRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-
+builder.Services.AddScoped<IUsersRepository, UsersDbRepository>();
+builder.Services.AddScoped<IPlantsRepository, PlantsDbRepository>();
 
 
 

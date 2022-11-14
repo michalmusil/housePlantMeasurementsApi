@@ -43,6 +43,7 @@
     <None Remove="Services\" />
     <None Remove="Services\AuthService\" />
     <None Remove="DTOs\Auth\" />
+    <None Remove="Repositories\Plants\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="db_data\" />
@@ -56,5 +57,6 @@
     <Folder Include="Services\" />
     <Folder Include="Services\AuthService\" />
     <Folder Include="DTOs\Auth\" />
+    <Folder Include="Repositories\Plants\" />
   </ItemGroup>
 </Project>

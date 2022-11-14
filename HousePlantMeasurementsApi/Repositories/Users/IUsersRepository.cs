@@ -7,7 +7,7 @@ namespace HousePlantMeasurementsApi.Repositories.Users
     {
         public Task<IEnumerable<User>> GetAllUsers();
 
-        public Task<User> GetById(int id);
+        public Task<User?> GetById(int id);
 
         public Task<User> GetByEmail(string email);
 

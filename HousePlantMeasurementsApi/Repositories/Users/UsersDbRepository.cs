@@ -23,7 +23,7 @@ namespace HousePlantMeasurementsApi.Repositories.Users
             return users;
         }
 
-        public async Task<User> GetById(int id)
+        public async Task<User?> GetById(int id)
         {
             var user = await DbContext.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
             return user;

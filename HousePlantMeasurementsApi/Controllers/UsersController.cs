@@ -10,8 +10,9 @@ using Microsoft.Extensions.Logging;
 
 namespace HousePlantMeasurementsApi.Controllers
 {
+    [Authorize]
     [ApiController]
-    [Route("/api/v1/Users")]
+    [Route("/api/v1/users")]
     public class UsersController : ControllerBase
     {
         public IConfiguration appConfiguration { get; set; }
@@ -31,7 +32,6 @@ namespace HousePlantMeasurementsApi.Controllers
 
 
 
-        [Authorize]
         [HttpGet(Name = "List")]
         public async Task<ActionResult<IEnumerable<GetUserDto>>> UsersList()
         {
@@ -40,7 +40,6 @@ namespace HousePlantMeasurementsApi.Controllers
             return Ok(mapper.Map<IEnumerable<GetUserDto>>(users));
         }
 
-        [Authorize]
         [HttpGet("{id}", Name = "GetById")]
         public async Task<ActionResult<GetUserDto>> GetById(int id)
         {
@@ -54,7 +53,8 @@ namespace HousePlantMeasurementsApi.Controllers
             return Ok(mapper.Map<GetUserDto>(user));
         }
 
-        [HttpPost("Register", Name = "Register")]
+        [AllowAnonymous]
+        [HttpPost("register", Name = "Register")]
         public async Task<ActionResult<GetUserDto>> Register(PostUserDto userPost)
         {
             var alreadyExistingUser = await usersRepository.GetByEmail(userPost.Email);
@@ -81,7 +81,6 @@ namespace HousePlantMeasurementsApi.Controllers
             return Ok(mapper.Map<GetUserDto>(newUser));
         }
 
-        [Authorize]
         [HttpPut(Name = "Update")]
         public async Task<ActionResult<GetUserDto>> UpdateUser(PutUserDto userPut)
         {
@@ -106,7 +105,6 @@ namespace HousePlantMeasurementsApi.Controllers
 
         }
 
-        [Authorize]
         [HttpDelete("{id}", Name = "Delete")]
         public async Task<ActionResult> DeleteUser(int id)
         {
