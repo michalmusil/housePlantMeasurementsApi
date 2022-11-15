@@ -248,7 +248,43 @@ namespace HousePlantMeasurementsApi.Controllers
             return Ok(mapper.Map<GetDeviceDto>(foundDevice));
         }
 
-        
+        [HttpPost("assignToPlant")]
+        public async Task<ActionResult<GetDeviceDto>> AssignDeviceToPlant(PostAssignToPlantDto assignObject)
+        {
+            var foundDevice = await devicesRepository.GetById(assignObject.DeviceId);
+
+            if (foundDevice == null)
+            {
+                return NotFound("Device with this id does not exist");
+            }
+
+            var plantToAssign = await plantsRepository.GetById(assignObject.PlantId);
+
+            if (plantToAssign == null)
+            {
+                return NotFound("Plant with this id does not exist");
+            }
+
+            if (foundDevice.UserId != plantToAssign.UserId)
+            {
+                return StatusCode(403, "Device must have same owner as the plant it's being assigned to");
+            }
+
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var isOwnerOfDevice = await authService.SignedUserHasId(HttpContext.User, foundDevice.UserId ?? -1);
+            var isOwnerOfPlant = await authService.SignedUserHasId(HttpContext.User, plantToAssign.UserId);
+
+            if (!isAdmin && (!isOwnerOfDevice || !isOwnerOfPlant))
+            {
+                return StatusCode(403, "You lack the ownership of either plant or device you are trying to assign");
+            }
+
+            foundDevice.PlantId = plantToAssign.Id;
+
+            var updated = await devicesRepository.UpdateDevice(foundDevice);
+
+            return Ok(mapper.Map<GetDeviceDto>(foundDevice));
+        }
 
 
 
