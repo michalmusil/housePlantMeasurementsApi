@@ -59,7 +59,7 @@ namespace HousePlantMeasurementsApi.Controllers
 
             if (!isAdmin && !asksForHimself)
             {
-                return Unauthorized();
+                return Forbid();
             }
 
             var user = await usersRepository.GetById(id);
@@ -113,7 +113,7 @@ namespace HousePlantMeasurementsApi.Controllers
             }
             if (!asksForHimself && !isAdmin)
             {
-                return Unauthorized(new { message = "Non-admin users can only update their own information" });
+                return Forbid();
             }
 
 
@@ -157,7 +157,7 @@ namespace HousePlantMeasurementsApi.Controllers
 
             if (!isAdmin && !asksForHimself)
             {
-                return Unauthorized(new { message = "Non-admin users can only delete their own account" });
+                return Forbid();
             }
 
             User? userToDelete = await usersRepository.GetById(id);

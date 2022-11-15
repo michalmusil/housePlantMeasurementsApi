@@ -51,11 +51,32 @@ namespace HousePlantMeasurementsApi.Controllers
             }
             if (!isAdmin && !asksForHimself)
             {
-                return Unauthorized();
+                return Forbid();
             }
 
             var plants = await plantsRepository.GetByUserId(userId);
             return Ok(mapper.Map<IEnumerable<GetPlantDto>>(plants));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<GetPlantDto>> GetById(int id)
+        {
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var foundPlant = await plantsRepository.GetById(id);
+
+            if (foundPlant == null)
+            {
+                return NotFound();
+            }
+
+            var asksForHimself = await authService.SignedUserHasId(HttpContext.User, foundPlant.UserId);
+
+            if (!isAdmin && !asksForHimself)
+            {
+                return Forbid();
+            }
+
+            return Ok(mapper.Map<GetPlantDto>(foundPlant));
         }
 
         [HttpPost]
@@ -64,23 +85,91 @@ namespace HousePlantMeasurementsApi.Controllers
             var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
             var asksForHimself = await authService.SignedUserHasId(HttpContext.User, plantPost.UserId);
 
-            User? newUser = null;
+            var plantOwner = await usersRepository.GetById(plantPost.UserId);
+
+            if (plantOwner == null)
+            {
+                return NotFound(new { message = $"User with id: {plantPost.UserId} was not found" });
+            }
+
+            if (!isAdmin && !asksForHimself)
+            {
+                return Forbid();
+            }
+
+            Plant? newPlant = null;
             try
             {
-                newUser = mapper.Map<User>(userPost);
-                newUser.Password = BCrypt.Net.BCrypt.HashPassword(newUser.Password);
+                newPlant = mapper.Map<Plant>(plantPost);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                logger.LogInformation($"User registration not successfull: {ex.ToString}");
+                logger.LogInformation($"Adding plant not successfull: {ex.ToString()}");
                 return BadRequest();
             }
 
-            var saved = await usersRepository.AddUser(newUser);
+            var savedPlant = await plantsRepository.AddPlant(newPlant);
 
-            return Ok(mapper.Map<GetUserDto>(newUser));
+            return Ok(mapper.Map<GetPlantDto>(newPlant));
         }
 
+        [HttpPut]
+        public async Task<ActionResult<GetPlantDto>> UpdatePlant(PutPlantDto plantPut)
+        {
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var plantToUpdate = await plantsRepository.GetById(plantPut.Id);
+
+            if (plantToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            var asksForHimself = await authService.SignedUserHasId(HttpContext.User, plantToUpdate.UserId);
+
+            if (!asksForHimself && !isAdmin)
+            {
+                return Forbid();
+            }
+
+            plantToUpdate.Name = plantPut.Name ?? plantToUpdate.Name;
+            plantToUpdate.Species = plantPut.Species ?? plantToUpdate.Species;
+            plantToUpdate.Description = plantPut.Description ?? plantToUpdate.Description;
+            plantToUpdate.Name = plantPut.Name ?? plantToUpdate.Name;
+
+            plantToUpdate.MoistureLowLimit = plantPut.MoistureLowLimit ?? plantToUpdate.MoistureLowLimit;
+            plantToUpdate.MoistureHighLimit = plantPut.MoistureHighLimit ?? plantToUpdate.MoistureHighLimit;
+            plantToUpdate.TemperatureLowLimit = plantPut.TemperatureLowLimit ?? plantToUpdate.TemperatureLowLimit;
+            plantToUpdate.TemperatureHighLimit = plantPut.TemperatureHighLimit ?? plantToUpdate.TemperatureHighLimit;
+            plantToUpdate.LightIntensityLowLimit = plantPut.LightIntensityLowLimit ?? plantToUpdate.LightIntensityLowLimit;
+            plantToUpdate.LightIntensityHighLimit = plantPut.LightIntensityHighLimit ?? plantToUpdate.LightIntensityHighLimit;
+
+            var updated = await plantsRepository.UpdatePlant(plantToUpdate);
+
+            return Ok(mapper.Map<GetPlantDto>(plantToUpdate));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeletePlant(int id)
+        {
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var plantToDelete = await plantsRepository.GetById(id);
+
+            if (plantToDelete == null)
+            {
+                return NotFound();
+            }
+
+            var asksForHimself = await authService.SignedUserHasId(HttpContext.User, plantToDelete.UserId);
+
+            if (!asksForHimself && !isAdmin)
+            {
+                return Forbid();
+            }
+
+            var deleted = await plantsRepository.DeletePlant(plantToDelete);
+
+            return Ok();
+        }
     }
 }
 
