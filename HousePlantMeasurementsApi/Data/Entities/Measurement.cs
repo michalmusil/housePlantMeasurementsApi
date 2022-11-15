@@ -21,6 +21,11 @@ namespace HousePlantMeasurementsApi.Data.Entities
         public int PlantId { get; set; }
         [Required]
         public Plant Plant { get; set; }
+
+        [Required]
+        public int DeviceId { get; set; }
+        [Required]
+        public Device Device { get; set; }
     }
 }
 

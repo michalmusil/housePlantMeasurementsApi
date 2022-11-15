@@ -48,6 +48,8 @@
     <None Remove="Data\Enums\" />
     <None Remove="Repositories\Devices\" />
     <None Remove="DTOs\Device\" />
+    <None Remove="Repositories\Measurements\" />
+    <None Remove="DTOs\Measurement\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="db_data\" />
@@ -66,5 +68,7 @@
     <Folder Include="Data\Enums\" />
     <Folder Include="Repositories\Devices\" />
     <Folder Include="DTOs\Device\" />
+    <Folder Include="Repositories\Measurements\" />
+    <Folder Include="DTOs\Measurement\" />
   </ItemGroup>
 </Project>

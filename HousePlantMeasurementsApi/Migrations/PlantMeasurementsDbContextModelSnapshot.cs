@@ -69,6 +69,9 @@ namespace HousePlantMeasurementsApi.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("DeviceId")
+                        .HasColumnType("int");
+
                     b.Property<double>("LightIntensity")
                         .HasColumnType("float");
 
@@ -88,6 +91,8 @@ namespace HousePlantMeasurementsApi.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DeviceId");
 
                     b.HasIndex("PlantId");
 
@@ -226,11 +231,19 @@ namespace HousePlantMeasurementsApi.Migrations
 
             modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.Measurement", b =>
                 {
+                    b.HasOne("HousePlantMeasurementsApi.Data.Entities.Device", "Device")
+                        .WithMany()
+                        .HasForeignKey("DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("HousePlantMeasurementsApi.Data.Entities.Plant", "Plant")
                         .WithMany()
                         .HasForeignKey("PlantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Device");
 
                     b.Navigation("Plant");
                 });

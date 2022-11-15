@@ -1,5 +1,6 @@
 ﻿using HouseDeviceMeasurementsApi.Repositories.Devices;
 using HousePlantMeasurementsApi.Data;
+using HousePlantMeasurementsApi.Repositories.Measurements;
 using HousePlantMeasurementsApi.Repositories.Plants;
 using HousePlantMeasurementsApi.Repositories.Users;
 using HousePlantMeasurementsApi.Services.AuthService;
@@ -87,6 +88,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUsersRepository, UsersDbRepository>();
 builder.Services.AddScoped<IPlantsRepository, PlantsDbRepository>();
 builder.Services.AddScoped<IDevicesRepository, DevicesDbRepository>();
+builder.Services.AddScoped<IMeasurementsRepository, MeasurementsDbRepository>();
 
 
 

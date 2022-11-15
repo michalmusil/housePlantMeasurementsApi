@@ -46,22 +46,22 @@ namespace HouseDeviceMeasurementsApi.Repositories.Devices
             return devices;
         }
 
-        public async Task<bool> AddDevice(Device Device)
+        public async Task<bool> AddDevice(Device device)
         {
-            dbContext.Add(Device);
+            dbContext.Add(device);
             return await dbContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> UpdateDevice(Device Device)
+        public async Task<bool> UpdateDevice(Device device)
         {
-            Device.Updated = DateTime.UtcNow;
-            dbContext.Update(Device);
+            device.Updated = DateTime.UtcNow;
+            dbContext.Update(device);
             return await dbContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> DeleteDevice(Device Device)
+        public async Task<bool> DeleteDevice(Device device)
         {
-            dbContext.Remove(Device);
+            dbContext.Remove(device);
             return await dbContext.SaveChangesAsync() > 0;
         }
     }
