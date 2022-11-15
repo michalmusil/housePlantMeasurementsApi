@@ -80,7 +80,7 @@ namespace HousePlantMeasurementsApi.Controllers
 
             if (alreadyExistingUser != null)
             {
-                return Conflict(new { message = "User with this email already exists" });
+                return Conflict("User with this email already exists");
             }
 
             User? newUser = null;
@@ -122,7 +122,7 @@ namespace HousePlantMeasurementsApi.Controllers
             {
                 if (!isAdmin)
                 {
-                    return Unauthorized(new { message = "Only admin can update users roles" });
+                    return StatusCode(403, "Only admin can update users roles");
                 }
 
                 userToUpdate.Role = userPut.Role ?? userToUpdate.Role;
@@ -133,7 +133,7 @@ namespace HousePlantMeasurementsApi.Controllers
                 var existingUser = await usersRepository.GetByEmail(userPut.Email);
                 if (existingUser != null)
                 {
-                    return Conflict(new { message = "User with this email already exists" });
+                    return Conflict("User with this email already exists");
                 }
 
                 userToUpdate.Email = userPut.Email;

@@ -46,6 +46,8 @@
     <None Remove="Repositories\Plants\" />
     <None Remove="DTOs\Plant\" />
     <None Remove="Data\Enums\" />
+    <None Remove="Repositories\Devices\" />
+    <None Remove="DTOs\Device\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="db_data\" />
@@ -62,5 +64,7 @@
     <Folder Include="Repositories\Plants\" />
     <Folder Include="DTOs\Plant\" />
     <Folder Include="Data\Enums\" />
+    <Folder Include="Repositories\Devices\" />
+    <Folder Include="DTOs\Device\" />
   </ItemGroup>
 </Project>

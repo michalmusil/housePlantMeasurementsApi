@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace HousePlantMeasurementsApi.Data.Entities
 {
@@ -8,6 +9,7 @@ namespace HousePlantMeasurementsApi.Data.Entities
     public class Device: BaseEntity
     {
         [Required]
+        [MinLength(30)]
         public string UUID { get; set; }
         [Required]
         public bool IsActive { get; set; }

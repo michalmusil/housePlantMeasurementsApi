@@ -8,9 +8,14 @@ namespace HousePlantMeasurementsApi.Data.Entities
     public class Plant : BaseEntity
     {
         [Required]
+        [MinLength(1)]
+        [MaxLength(1000)]
         public string Name { get; set; }
         [Required]
+        [MinLength(1)]
+        [MaxLength(1000)]
         public string Species { get; set; }
+        [MaxLength(5000)]
         public string? Description { get; set; }
 
         public double? MoistureLowLimit { get; set; }

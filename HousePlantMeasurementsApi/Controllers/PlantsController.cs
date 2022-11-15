@@ -39,16 +39,18 @@ namespace HousePlantMeasurementsApi.Controllers
 
 
         [HttpGet("user/{userId}")]
-        public async Task<ActionResult<IEnumerable<GetPlantDto>>> GetAllPlants(int userId)
+        public async Task<ActionResult<IEnumerable<GetPlantDto>>> GetAllPlantsOfUser(int userId)
         {
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
-            var asksForHimself = await authService.SignedUserHasId(HttpContext.User, userId);
             var ownerOfPlants = await usersRepository.GetById(userId);
 
             if (ownerOfPlants == null)
             {
                 return NotFound();
             }
+
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var asksForHimself = await authService.SignedUserHasId(HttpContext.User, userId);
+            
             if (!isAdmin && !asksForHimself)
             {
                 return Forbid();

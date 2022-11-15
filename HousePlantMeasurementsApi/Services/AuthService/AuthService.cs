@@ -65,11 +65,27 @@ namespace HousePlantMeasurementsApi.Services.AuthService
 
         }
 
+        public async Task<int?> GetSignedUserId(ClaimsPrincipal? user)
+        {
+            var signedUserClaim = user?.Claims.Where(c => c.Type == "userId").FirstOrDefault();
+            if (signedUserClaim == null)
+            {
+                return null;
+            }
+            try
+            {
+                return Int32.Parse(signedUserClaim.Value);
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
 
         public async Task<bool> SignedUserHasRole(ClaimsPrincipal? user, UserRole role)
         {
-            var signedUserId = await GetUserIdFromClaims(user.Claims);
+            var signedUserId = await GetSignedUserId(user);
             var signedUserRole = await GetUserRole(signedUserId ?? -1);
 
             return signedUserRole == role;
@@ -77,28 +93,7 @@ namespace HousePlantMeasurementsApi.Services.AuthService
 
         public async Task<bool> SignedUserHasId(ClaimsPrincipal? user, int id)
         {
-            return await GetUserIdFromClaims(user.Claims) == id;
-        }
-
-
-
-
-        private async Task<int?> GetUserIdFromClaims(IEnumerable<Claim> claims)
-        {
-            var signedUserClaim = claims.Where(c => c.Type == "userId").FirstOrDefault();
-            if (signedUserClaim == null)
-            {
-                return null;
-            }
-
-            try
-            {
-                return Int32.Parse(signedUserClaim.Value);
-            }
-            catch(Exception ex)
-            {
-                return null;
-            }
+            return await GetSignedUserId(user) == id;
         }
 
         private async Task<UserRole?> GetUserRole(int userId)
