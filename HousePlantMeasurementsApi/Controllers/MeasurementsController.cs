@@ -1,8 +1,11 @@
 ﻿using System;
 using AutoMapper;
+using HouseDeviceMeasurementsApi.Repositories.Devices;
 using HousePlantMeasurementsApi.Data.Entities;
 using HousePlantMeasurementsApi.Data.Enums;
+using HousePlantMeasurementsApi.DTOs.Measurement;
 using HousePlantMeasurementsApi.DTOs.Plant;
+using HousePlantMeasurementsApi.Repositories.Measurements;
 using HousePlantMeasurementsApi.Repositories.Plants;
 using HousePlantMeasurementsApi.Repositories.Users;
 using HousePlantMeasurementsApi.Services.AuthService;
@@ -18,100 +21,116 @@ namespace HousePlantMeasurementsApi.Controllers
     {
         private readonly ILogger logger;
         private readonly IMapper mapper;
+        private readonly IMeasurementsRepository measurementsRepository;
+        private readonly IDevicesRepository devicesRepository;
         private readonly IPlantsRepository plantsRepository;
-        private readonly IUsersRepository usersRepository;
         private readonly IAuthService authService;
 
         public MeasurementsController(
             ILogger<PlantsController> logger,
             IMapper mapper,
+            IMeasurementsRepository measurementsRepository,
+            IDevicesRepository devicesRepository,
             IPlantsRepository plantsRepository,
-            IUsersRepository usersRepository,
             IAuthService authService)
         {
             this.logger = logger;
             this.mapper = mapper;
+            this.measurementsRepository = measurementsRepository;
+            this.devicesRepository = devicesRepository;
             this.plantsRepository = plantsRepository;
-            this.usersRepository = usersRepository;
             this.authService = authService;
         }
 
 
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<IEnumerable<GetPlantDto>>> GetAllPlantsOfUser(int userId)
+        [HttpGet("plant/{plantId}")]
+        public async Task<ActionResult<IEnumerable<GetMeasurementDto>>> GetAllMeasurementsOfPlant(int plantId)
         {
-            var ownerOfPlants = await usersRepository.GetById(userId);
+            var plant = await plantsRepository.GetById(plantId);
 
-            if (ownerOfPlants == null)
+            if (plant == null)
             {
                 return NotFound();
             }
 
             var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
-            var asksForHimself = await authService.SignedUserHasId(HttpContext.User, userId);
+            var asksForHimself = await authService.SignedUserHasId(HttpContext.User, plant.UserId);
 
             if (!isAdmin && !asksForHimself)
             {
-                return Forbid();
+                return StatusCode(403, "Only owner of this plant or admin can view its measurements");
             }
 
-            var plants = await plantsRepository.GetByUserId(userId);
-            return Ok(mapper.Map<IEnumerable<GetPlantDto>>(plants));
+            var measurements = await measurementsRepository.GetByPlantId(plant.Id);
+
+            return Ok(mapper.Map<IEnumerable<GetMeasurementDto>>(measurements));
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<GetPlantDto>> GetById(int id)
+        [HttpGet("device/{deviceId}")]
+        public async Task<ActionResult<IEnumerable<GetMeasurementDto>>> GetAllMeasurementsOfDevice(int deviceId)
         {
             var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
-            var foundPlant = await plantsRepository.GetById(id);
 
-            if (foundPlant == null)
+            if (!isAdmin)
+            {
+                return StatusCode(403, "This endpoint is restricted for admin users only");
+            }
+
+            var device = await devicesRepository.GetById(deviceId);
+
+            if (device == null)
             {
                 return NotFound();
             }
 
-            var asksForHimself = await authService.SignedUserHasId(HttpContext.User, foundPlant.UserId);
+            var measurements = await measurementsRepository.GetByDeviceId(device.Id);
 
-            if (!isAdmin && !asksForHimself)
-            {
-                return Forbid();
-            }
-
-            return Ok(mapper.Map<GetPlantDto>(foundPlant));
+            return Ok(mapper.Map<IEnumerable<GetMeasurementDto>>(measurements));
         }
 
         [HttpPost]
-        public async Task<ActionResult<GetPlantDto>> AddNewPlant(PostPlantDto plantPost)
+        [AllowAnonymous]
+        public async Task<ActionResult<GetPlantDto>> PostNewMeasurement(PostMeasurementDto measurementPost)
         {
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
-            var asksForHimself = await authService.SignedUserHasId(HttpContext.User, plantPost.UserId);
+            var foundDevice = await devicesRepository.GetByUUID(measurementPost.DeviceUUID);
 
-            var plantOwner = await usersRepository.GetById(plantPost.UserId);
-
-            if (plantOwner == null)
+            if (foundDevice == null)
             {
-                return NotFound(new { message = $"User with id: {plantPost.UserId} was not found" });
+                return NotFound("No device with this UUID was found");
             }
 
-            if (!isAdmin && !asksForHimself)
+            var plant = await plantsRepository.GetById(foundDevice.PlantId ?? -1);
+
+            if (foundDevice.UserId == null || plant == null)
             {
-                return Forbid();
+                return StatusCode(403, "Device is not assigned to an existing plant");
             }
 
-            Plant? newPlant = null;
+            if (
+                !(measurementPost.Temperature >= plant.TemperatureLowLimit && measurementPost.Temperature <= plant.TemperatureHighLimit &&
+                measurementPost.Moisture >= plant.MoistureLowLimit && measurementPost.Moisture <= plant.MoistureHighLimit &&
+                measurementPost.LightIntensity >= plant.LightIntensityLowLimit && measurementPost.LightIntensity <= plant.LightIntensityHighLimit)
+                )
+            {
+                return Accepted(new { message = "Measurement accepted but not saved - values out of set boundries" });
+            }
+
+
+            Measurement? newMeasurement = null;
             try
-            {
-                newPlant = mapper.Map<Plant>(plantPost);
+            { 
+                newMeasurement = mapper.Map<Measurement>(measurementPost);
+                newMeasurement.PlantId = plant.Id;
+                newMeasurement.DeviceId = foundDevice.Id;
             }
             catch (Exception ex)
             {
-                logger.LogInformation($"Adding plant not successfull: {ex.ToString()}");
+                logger.LogInformation($"Could not parse posted measurement: {ex.ToString()}");
                 return BadRequest();
             }
 
-            var savedPlant = await plantsRepository.AddPlant(newPlant);
-
-            return Ok(mapper.Map<GetPlantDto>(newPlant));
+            var saved = await measurementsRepository.AddMeasurement(newMeasurement);
+            return Ok(mapper.Map<GetMeasurementDto>(newMeasurement));
         }
 
     }
