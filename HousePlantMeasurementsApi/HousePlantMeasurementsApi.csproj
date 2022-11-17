@@ -50,6 +50,7 @@
     <None Remove="DTOs\Device\" />
     <None Remove="Repositories\Measurements\" />
     <None Remove="DTOs\Measurement\" />
+    <None Remove="Services\ValidationHelperService\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="db_data\" />
@@ -70,5 +71,6 @@
     <Folder Include="DTOs\Device\" />
     <Folder Include="Repositories\Measurements\" />
     <Folder Include="DTOs\Measurement\" />
+    <Folder Include="Services\ValidationHelperService\" />
   </ItemGroup>
 </Project>

@@ -9,6 +9,7 @@ using HousePlantMeasurementsApi.Repositories.Measurements;
 using HousePlantMeasurementsApi.Repositories.Plants;
 using HousePlantMeasurementsApi.Repositories.Users;
 using HousePlantMeasurementsApi.Services.AuthService;
+using HousePlantMeasurementsApi.Services.ValidationHelperService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +26,7 @@ namespace HousePlantMeasurementsApi.Controllers
         private readonly IDevicesRepository devicesRepository;
         private readonly IPlantsRepository plantsRepository;
         private readonly IAuthService authService;
+        private readonly IValidationHelperService validationHelperService;
 
         public MeasurementsController(
             ILogger<PlantsController> logger,
@@ -32,7 +34,8 @@ namespace HousePlantMeasurementsApi.Controllers
             IMeasurementsRepository measurementsRepository,
             IDevicesRepository devicesRepository,
             IPlantsRepository plantsRepository,
-            IAuthService authService)
+            IAuthService authService,
+            IValidationHelperService validationHelperService)
         {
             this.logger = logger;
             this.mapper = mapper;
@@ -40,8 +43,8 @@ namespace HousePlantMeasurementsApi.Controllers
             this.devicesRepository = devicesRepository;
             this.plantsRepository = plantsRepository;
             this.authService = authService;
+            this.validationHelperService = validationHelperService;
         }
-
 
         [HttpGet("plant/{plantId}")]
         public async Task<ActionResult<IEnumerable<GetMeasurementDto>>> GetAllMeasurementsOfPlant(int plantId)
@@ -99,6 +102,11 @@ namespace HousePlantMeasurementsApi.Controllers
                 return NotFound("No device with this UUID was found");
             }
 
+            if (!foundDevice.IsActive)
+            {
+                return Accepted(new { message = "Measurement accepted but not saved - sender measuring device is deactivated" });
+            }
+
             var plant = await plantsRepository.GetById(foundDevice.PlantId ?? -1);
 
             if (foundDevice.UserId == null || plant == null)
@@ -107,9 +115,9 @@ namespace HousePlantMeasurementsApi.Controllers
             }
 
             if (
-                !(measurementPost.Temperature >= plant.TemperatureLowLimit && measurementPost.Temperature <= plant.TemperatureHighLimit &&
-                measurementPost.Moisture >= plant.MoistureLowLimit && measurementPost.Moisture <= plant.MoistureHighLimit &&
-                measurementPost.LightIntensity >= plant.LightIntensityLowLimit && measurementPost.LightIntensity <= plant.LightIntensityHighLimit)
+                !(validationHelperService.IsBetweenBoundries(plant.TemperatureLowLimit, measurementPost.Temperature, plant.TemperatureHighLimit) &&
+                  validationHelperService.IsBetweenBoundries(plant.MoistureLowLimit, measurementPost.Moisture, plant.MoistureHighLimit) &&
+                  validationHelperService.IsBetweenBoundries(plant.LightIntensityLowLimit, measurementPost.LightIntensity, plant.LightIntensityHighLimit))
                 )
             {
                 return Accepted(new { message = "Measurement accepted but not saved - values out of set boundries" });
