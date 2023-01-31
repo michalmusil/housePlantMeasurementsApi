@@ -117,10 +117,19 @@ namespace HousePlantMeasurementsApi.Controllers
                 return Conflict("Device with this UUID already exists");
             }
 
+            var newDeviceAuthHash = authService.GetDeviceAuthHash(devicePost.MacAddress);
+
+            if (newDeviceAuthHash == null)
+            {
+                return BadRequest("Device UUID or MAC address are not compatible");
+            }
+
             Device newDevice = null;
+
             try
             {
                 newDevice = mapper.Map<Device>(devicePost);
+                newDevice.AuthHash = newDeviceAuthHash;
                 var saved = devicesRepository.AddDevice(newDevice);
             }
             catch (Exception ex)
@@ -132,85 +141,39 @@ namespace HousePlantMeasurementsApi.Controllers
             return Ok(mapper.Map<GetDeviceDto>(newDevice));
         }
 
-        [HttpPut]
-        public async Task<ActionResult<GetDeviceDto>> UpdateDevice(PutDeviceDto devicePut)
-        {
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
-
-            if (!isAdmin)
-            {
-                return StatusCode(403, "This endpoint is restricted for admin users only");
-            }
-
-            var foundDevice = await devicesRepository.GetById(devicePut.Id);
-
-            if (foundDevice == null)
-            {
-                return NotFound();
-            }
-
-            if (devicePut.UUID != null)
-            {
-                var deviceWithNewUUID = await devicesRepository.GetByUUID(devicePut.UUID);
-
-                if (deviceWithNewUUID != null)
-                {
-                    return Conflict("Device with this UUID already exists");
-                }
-            }
-
-            foundDevice.IsActive = devicePut.IsActive ?? foundDevice.IsActive;
-            foundDevice.UUID = devicePut.UUID ?? foundDevice.UUID;
-            foundDevice.UserId = devicePut.UserId ?? foundDevice.UserId;
-            foundDevice.PlantId = devicePut.PlantId ?? foundDevice.PlantId;
-
-            var updated = devicesRepository.UpdateDevice(foundDevice);
-
-            return Ok(mapper.Map<GetDeviceDto>(foundDevice));
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteDevice(int id)
-        {
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
-
-            if (!isAdmin)
-            {
-                return StatusCode(403, "This endpoint is restricted for admin users only");
-            }
-
-            var foundDevice = await devicesRepository.GetById(id);
-
-            if (foundDevice == null)
-            {
-                return NotFound();
-            }
-
-            var deleted = devicesRepository.DeleteDevice(foundDevice);
-
-            return Ok();
-        }
-
         [HttpPost("register")]
         public async Task<ActionResult<GetDeviceDto>> RegisterDevice(PostRegisterDeviceDto registerObject)
         {
+            //Returning generic BadRequest for all failures to minimize feedback on attempts to brute force register devices
             var foundDevice = await devicesRepository.GetByUUID(registerObject.UUID);
 
             if (foundDevice == null)
             {
-                return NotFound("Device with this UUID does not exist");
+                //Device with this UUID does not exist
+                return BadRequest();
+            }
+
+            var deviceAuth = authService.GetDeviceAuthHashBase(registerObject.MacAddress);
+            var isAuthenticated = BCrypt.Net.BCrypt.Verify(deviceAuth, foundDevice.AuthHash);
+
+            if (!isAuthenticated)
+            {
+                //MAC address of the request is not valid - device not authenticated
+                return BadRequest();
             }
 
             if (foundDevice.UserId != null)
             {
-                return StatusCode(403, "This device has already been registered");
+                //This device has already been registered
+                return BadRequest();
             }
 
             var registeringUserId = await authService.GetSignedUserId(HttpContext.User);
 
             if (registeringUserId == null)
             {
-                return StatusCode(403, "Could not determine users identity");
+                //Could not determine users identity
+                return BadRequest();
             }
 
             foundDevice.UserId = registeringUserId;

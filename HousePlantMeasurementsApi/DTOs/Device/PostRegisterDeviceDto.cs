@@ -8,6 +8,11 @@ namespace HousePlantMeasurementsApi.DTOs.Device
         [Required]
         [MinLength(30)]
         public string UUID { get; set; }
+
+        [Required]
+        [MinLength(17)]
+        [MaxLength(17)]
+        public string MacAddress { get; set; }
     }
 }
 

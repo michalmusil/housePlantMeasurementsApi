@@ -95,23 +95,36 @@ namespace HousePlantMeasurementsApi.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<GetPlantDto>> PostNewMeasurement(PostMeasurementDto measurementPost)
         {
+            //Response is always 200 OK - so that malicious user can't get feedback on brute force guessing
             var foundDevice = await devicesRepository.GetByUUID(measurementPost.DeviceUUID);
 
             if (foundDevice == null)
             {
-                return NotFound("No device with this UUID was found");
+                //No device with this UUID was found
+                return Ok();
+            }
+
+            var deviceAuth = authService.GetDeviceAuthHashBase(measurementPost.DeviceMacAddress);
+            var isAuthenticated = BCrypt.Net.BCrypt.Verify(deviceAuth, foundDevice.AuthHash);
+
+            if (!isAuthenticated)
+            {
+                //MAC address of the request is not valid - device not authenticated
+                return Ok();
             }
 
             if (!foundDevice.IsActive)
             {
-                return Accepted(new { message = "Measurement accepted but not saved - sender measuring device is deactivated" });
+                //Measurement accepted but not saved - sender measuring device is deactivated
+                return Ok();
             }
 
             var plant = await plantsRepository.GetById(foundDevice.PlantId ?? -1);
 
             if (foundDevice.UserId == null || plant == null)
             {
-                return StatusCode(403, "Device is not assigned to an existing plant");
+                //Device is not assigned to an existing plant
+                return Ok();
             }
 
             if (
@@ -120,9 +133,9 @@ namespace HousePlantMeasurementsApi.Controllers
                   validationHelperService.IsBetweenBoundries(plant.LightIntensityLowLimit, measurementPost.LightIntensity, plant.LightIntensityHighLimit))
                 )
             {
-                return Accepted(new { message = "Measurement accepted but not saved - values out of set boundries" });
+                //Measurement accepted but not saved - values out of set boundries
+                return Ok();
             }
-
 
             Measurement? newMeasurement = null;
             try
@@ -134,7 +147,8 @@ namespace HousePlantMeasurementsApi.Controllers
             catch (Exception ex)
             {
                 logger.LogInformation($"Could not parse posted measurement: {ex.ToString()}");
-                return BadRequest();
+                //Measurement has not been parsed properly
+                return Ok();
             }
 
             var saved = await measurementsRepository.AddMeasurement(newMeasurement);

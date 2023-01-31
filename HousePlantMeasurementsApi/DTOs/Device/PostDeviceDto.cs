@@ -8,8 +8,14 @@ namespace HousePlantMeasurementsApi.DTOs.Device
         [Required]
         [MinLength(30)]
         public string UUID { get; set; }
+
         [Required]
-        public bool IsActive { get; set; }
+        [MinLength(17)]
+        [MaxLength(17)]
+        public string MacAddress { get; set; }
+
+        [Required]
+        public bool IsActive { get; set; } = false;
         public int? UserId { get; set; }
         public int? PlantId { get; set; }
     }

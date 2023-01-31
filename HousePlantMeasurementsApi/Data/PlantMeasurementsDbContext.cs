@@ -10,7 +10,6 @@ namespace HousePlantMeasurementsApi.Data
         public DbSet<Device> Devices { get; set; }
         public DbSet<Plant> Plants { get; set; }
         public DbSet<Measurement> Measurements { get; set; }
-        public DbSet<PlantImage> PlantImages { get; set; }
 
         public PlantMeasurementsDbContext(DbContextOptions<PlantMeasurementsDbContext> options)
             : base(options)

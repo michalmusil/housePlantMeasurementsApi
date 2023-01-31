@@ -86,15 +86,35 @@ namespace HousePlantMeasurementsApi.Services.AuthService
         public async Task<bool> SignedUserHasRole(ClaimsPrincipal? user, UserRole role)
         {
             var signedUserId = await GetSignedUserId(user);
-            var signedUserRole = await GetUserRole(signedUserId ?? -1);
+            if (signedUserId.HasValue)
+            {
+                var signedUserRole = await GetUserRole(signedUserId.Value);
+                return signedUserRole == role;
+            }
 
-            return signedUserRole == role;
+            return false;
         }
 
         public async Task<bool> SignedUserHasId(ClaimsPrincipal? user, int id)
         {
             return await GetSignedUserId(user) == id;
         }
+
+        public string GetDeviceAuthHashBase(string macAddress)
+        {
+            return macAddress;
+        }
+
+        public string? GetDeviceAuthHash(string macAddress)
+        {
+            var baseString = GetDeviceAuthHashBase(macAddress);
+            var hashed = BCrypt.Net.BCrypt.HashPassword(baseString);
+            return hashed;
+        }
+
+
+
+
 
         private async Task<UserRole?> GetUserRole(int userId)
         {
@@ -105,8 +125,6 @@ namespace HousePlantMeasurementsApi.Services.AuthService
             }
             return foundUser.Role;
         }
-
-        
     }
 }
 

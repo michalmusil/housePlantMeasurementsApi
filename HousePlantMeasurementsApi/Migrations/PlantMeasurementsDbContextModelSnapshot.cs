@@ -30,6 +30,10 @@ namespace HousePlantMeasurementsApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("AuthHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -142,6 +146,9 @@ namespace HousePlantMeasurementsApi.Migrations
                     b.Property<double?>("TemperatureLowLimit")
                         .HasColumnType("float");
 
+                    b.Property<string>("TitleImagePath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime2");
 
@@ -153,34 +160,6 @@ namespace HousePlantMeasurementsApi.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Plants");
-                });
-
-            modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.PlantImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ImageName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PlantId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PlantId");
-
-                    b.ToTable("PlantImages");
                 });
 
             modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.User", b =>
@@ -257,17 +236,6 @@ namespace HousePlantMeasurementsApi.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.PlantImage", b =>
-                {
-                    b.HasOne("HousePlantMeasurementsApi.Data.Entities.Plant", "Plant")
-                        .WithMany()
-                        .HasForeignKey("PlantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Plant");
                 });
 #pragma warning restore 612, 618
         }

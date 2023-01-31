@@ -51,6 +51,8 @@
     <None Remove="Repositories\Measurements\" />
     <None Remove="DTOs\Measurement\" />
     <None Remove="Services\ValidationHelperService\" />
+    <None Remove="Resources\" />
+    <None Remove="Resources\PlantImages\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="db_data\" />
@@ -72,5 +74,7 @@
     <Folder Include="Repositories\Measurements\" />
     <Folder Include="DTOs\Measurement\" />
     <Folder Include="Services\ValidationHelperService\" />
+    <Folder Include="Resources\" />
+    <Folder Include="Resources\PlantImages\" />
   </ItemGroup>
 </Project>

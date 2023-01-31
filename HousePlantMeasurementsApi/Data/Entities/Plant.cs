@@ -11,12 +11,16 @@ namespace HousePlantMeasurementsApi.Data.Entities
         [MinLength(1)]
         [MaxLength(1000)]
         public string Name { get; set; }
+
         [Required]
         [MinLength(1)]
         [MaxLength(1000)]
         public string Species { get; set; }
+
         [MaxLength(5000)]
         public string? Description { get; set; }
+
+        public string? TitleImagePath { get; set; }
 
         public double? MoistureLowLimit { get; set; }
         public double? MoistureHighLimit { get; set; }
@@ -32,7 +36,6 @@ namespace HousePlantMeasurementsApi.Data.Entities
         [Required]
         public User User { get; set; }
 
-        List<PlantImage> PlantImages { get; set; }
         List<Measurement> Measurements { get; set; }
     }
 }

@@ -7,6 +7,10 @@ namespace HousePlantMeasurementsApi.DTOs.Measurement
     {
         [Required]
         public string DeviceUUID { get; set; }
+
+        [Required]
+        public string DeviceMacAddress { get; set; }
+
         [Required]
         public double Moisture { get; set; }
         [Required]
