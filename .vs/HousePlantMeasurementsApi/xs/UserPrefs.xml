@@ -1,29 +1,32 @@
 ﻿<Properties StartupConfiguration="{C5E3879F-A91D-415A-AFD4-6ADC3D077C28}|Default">
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/michalmusil/MENDELU/Bakalarka/SledovaniCharakteristikProstrediPokojovychRostlin/Code/housePlantMeasurementsApi/HousePlantMeasurementsApi/Controllers/DevicesController.cs" relfile="HousePlantMeasurementsApi/Controllers/DevicesController.cs" line="148" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.ItemProperties.HousePlantMeasurementsApi PreferredExecutionTarget="/Applications/Firefox.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/appsettings.json">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/Program.cs">
     <Files>
-      <File FileName="HousePlantMeasurementsApi/Controllers/MeasurementsController.cs" Line="106" Column="14" />
-      <File FileName="HousePlantMeasurementsApi/Automapper/Profiles/MeasurementProfile.cs" Line="12" Column="41" />
+      <File FileName="HousePlantMeasurementsApi/Controllers/AuthController.cs" Line="15" Column="9" />
+      <File FileName="HousePlantMeasurementsApi/Program.cs" Line="125" Column="5" />
       <File FileName="HousePlantMeasurementsApi/Controllers/DevicesController.cs" Line="1" Column="1" />
-      <File FileName="HousePlantMeasurementsApi/Services/ValidationHelperService/ValidationHelperService.cs" Line="16" Column="25" />
-      <File FileName="HousePlantMeasurementsApi/DTOs/Measurement/GetMeasurementDto.cs" Line="11" Column="28" />
-      <File FileName="HousePlantMeasurementsApi/appsettings.json" Line="30" Column="1" />
-      <File FileName="HousePlantMeasurementsApi/Program.cs" Line="117" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="HousePlantMeasurementsApi" expanded="True">
             <Node name="HousePlantMeasurementsApi" expanded="True">
-              <Node name="Automapper" expanded="True">
-                <Node name="Profiles" expanded="True" />
-              </Node>
               <Node name="Controllers" expanded="True" />
               <Node name="Data" expanded="True">
                 <Node name="Entities" expanded="True" />
+              </Node>
+              <Node name="Resources" expanded="True">
+                <Node name="PlantImages" expanded="True" />
+              </Node>
+              <Node name="Services" expanded="True">
+                <Node name="AuthService" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -34,7 +37,5 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.HousePlantMeasurementsApi PreferredExecutionTarget="/Applications/Firefox.app" />
 </Properties>

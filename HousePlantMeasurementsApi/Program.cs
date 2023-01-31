@@ -7,11 +7,14 @@ using HousePlantMeasurementsApi.Services.AuthService;
 using HousePlantMeasurementsApi.Services.ImageService;
 using HousePlantMeasurementsApi.Services.ValidationHelperService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Net;
 using System.Text;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -106,6 +109,32 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    app.UseExceptionHandler((errorApp) =>
+    {
+        errorApp.Run(async (context) =>
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            context.Response.ContentType = "application/json";
+            var exceptionHandler = context.Features.Get<IExceptionHandlerFeature>();
+            var message = JsonSerializer.Serialize(new { message = exceptionHandler.Error.Message.ToString() });
+            await context.Response.WriteAsync(message);
+        });
+    });
+}
+else
+{
+    app.UseExceptionHandler((errorApp) =>
+    {
+        errorApp.Run(async (context) =>
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            context.Response.ContentType = "application/json";
+            var exceptionHandler = context.Features.Get<IExceptionHandlerFeature>();
+            var message = JsonSerializer.Serialize(new { message = "Something went wrong on the server" });
+            await context.Response.WriteAsync(message);
+        });
+    });
 }
 
 app.UseAuthentication();
@@ -113,6 +142,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Adding custom exception handling for when there is an internal error
+
 
 app.Run();
 
