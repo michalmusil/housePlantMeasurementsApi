@@ -53,6 +53,7 @@
     <None Remove="Services\ValidationHelperService\" />
     <None Remove="Resources\" />
     <None Remove="Resources\PlantImages\" />
+    <None Remove="Services\ImageService\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="db_data\" />
@@ -76,5 +77,6 @@
     <Folder Include="Services\ValidationHelperService\" />
     <Folder Include="Resources\" />
     <Folder Include="Resources\PlantImages\" />
+    <Folder Include="Services\ImageService\" />
   </ItemGroup>
 </Project>

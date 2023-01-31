@@ -22,6 +22,8 @@ namespace HousePlantMeasurementsApi.DTOs.Plant
         public double? LightIntensityLowLimit { get; set; }
         public double? LightIntensityHighLimit { get; set; }
 
+        public string? ImageName { get; set; }
+
     }
 }
 

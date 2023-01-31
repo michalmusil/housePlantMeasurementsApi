@@ -7,8 +7,11 @@ using HousePlantMeasurementsApi.DTOs.User;
 using HousePlantMeasurementsApi.Repositories.Plants;
 using HousePlantMeasurementsApi.Repositories.Users;
 using HousePlantMeasurementsApi.Services.AuthService;
+using HousePlantMeasurementsApi.Services.ImageService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.Hosting;
 
 namespace HousePlantMeasurementsApi.Controllers
 {
@@ -22,19 +25,22 @@ namespace HousePlantMeasurementsApi.Controllers
         private readonly IPlantsRepository plantsRepository;
         private readonly IUsersRepository usersRepository;
         private readonly IAuthService authService;
+        private readonly IImageService imageService;
 
         public PlantsController(
             ILogger<PlantsController> logger,
             IMapper mapper,
             IPlantsRepository plantsRepository,
             IUsersRepository usersRepository,
-            IAuthService authService)
+            IAuthService authService,
+            IImageService imageService)
         {
             this.logger = logger;
             this.mapper = mapper;
             this.plantsRepository = plantsRepository;
             this.usersRepository = usersRepository;
             this.authService = authService;
+            this.imageService = imageService;
         }
 
 
@@ -171,6 +177,82 @@ namespace HousePlantMeasurementsApi.Controllers
             var deleted = await plantsRepository.DeletePlant(plantToDelete);
 
             return Ok();
+        }
+
+
+
+
+
+        [HttpGet("/images/{plantId}", Name = "GetPlantImage")]
+        public async Task<ActionResult> GetPlantImage(int plantId)
+        {
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var plant = await plantsRepository.GetById(plantId);
+
+            if (plant == null)
+            {
+                return NotFound();
+            }
+
+            var asksForHimself = await authService.SignedUserHasId(HttpContext.User, plant.UserId);
+
+            if (!asksForHimself && !isAdmin)
+            {
+                return Forbid();
+            }
+
+            if (plant.TitleImagePath == null)
+            {
+                return NotFound();
+            }
+
+            var image = await imageService.GetImageFromPath(plant.TitleImagePath);
+            var contentType = await imageService.GetImageContentType(plant.TitleImagePath);
+
+            if (image == null || contentType == null)
+            {
+                return NotFound();
+            }
+
+            return File(image, contentType);
+        }
+
+        [HttpPut("/images")]
+        public async Task<ActionResult> SetPlantTitleImage(int plantId, IFormFile image)
+        {
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var plant = await plantsRepository.GetById(plantId);
+
+            if (plant == null)
+            {
+                return NotFound();
+            }
+
+            var asksForHimself = await authService.SignedUserHasId(HttpContext.User, plant.UserId);
+            var oldImageName = plant.TitleImagePath;
+
+            if (!asksForHimself && !isAdmin)
+            {
+                return Forbid();
+            }
+
+            try
+            {
+                var imageName = await imageService.SaveImageToFileSystem(image);
+                plant.TitleImagePath = imageName;
+                var updated = await plantsRepository.UpdatePlant(plant);
+
+                if(oldImageName != null)
+                {
+                    var oldDeleted = imageService.RemoveImageFromFileSystem(oldImageName);
+                }
+
+                return Ok(mapper.Map<GetPlantDto>(plant));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest("Could not save image");
+            }
         }
     }
 }
