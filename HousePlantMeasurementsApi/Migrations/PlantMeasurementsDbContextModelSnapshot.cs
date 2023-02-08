@@ -76,20 +76,11 @@ namespace HousePlantMeasurementsApi.Migrations
                     b.Property<int>("DeviceId")
                         .HasColumnType("int");
 
-                    b.Property<double>("LightIntensity")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Moisture")
-                        .HasColumnType("float");
-
                     b.Property<int>("PlantId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Taken")
                         .HasColumnType("datetime2");
-
-                    b.Property<double>("Temperature")
-                        .HasColumnType("float");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime2");
@@ -101,6 +92,69 @@ namespace HousePlantMeasurementsApi.Migrations
                     b.HasIndex("PlantId");
 
                     b.ToTable("Measurements");
+                });
+
+            modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.MeasurementValue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MeasurementId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MeasurementId");
+
+                    b.ToTable("MeasurementValues");
+                });
+
+            modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.MeasurementValueLimit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("LowerLimit")
+                        .HasColumnType("float");
+
+                    b.Property<int>("PlantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("UpperLimit")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlantId");
+
+                    b.ToTable("MeasurementValueLimits");
                 });
 
             modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.Plant", b =>
@@ -118,18 +172,6 @@ namespace HousePlantMeasurementsApi.Migrations
                         .HasMaxLength(5000)
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double?>("LightIntensityHighLimit")
-                        .HasColumnType("float");
-
-                    b.Property<double?>("LightIntensityLowLimit")
-                        .HasColumnType("float");
-
-                    b.Property<double?>("MoistureHighLimit")
-                        .HasColumnType("float");
-
-                    b.Property<double?>("MoistureLowLimit")
-                        .HasColumnType("float");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(1000)
@@ -139,12 +181,6 @@ namespace HousePlantMeasurementsApi.Migrations
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
-
-                    b.Property<double?>("TemperatureHighLimit")
-                        .HasColumnType("float");
-
-                    b.Property<double?>("TemperatureLowLimit")
-                        .HasColumnType("float");
 
                     b.Property<string>("TitleImagePath")
                         .HasColumnType("nvarchar(max)");
@@ -217,12 +253,34 @@ namespace HousePlantMeasurementsApi.Migrations
                         .IsRequired();
 
                     b.HasOne("HousePlantMeasurementsApi.Data.Entities.Plant", "Plant")
-                        .WithMany()
+                        .WithMany("Measurements")
                         .HasForeignKey("PlantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Device");
+
+                    b.Navigation("Plant");
+                });
+
+            modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.MeasurementValue", b =>
+                {
+                    b.HasOne("HousePlantMeasurementsApi.Data.Entities.Measurement", "Measurement")
+                        .WithMany("MeasurementValues")
+                        .HasForeignKey("MeasurementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Measurement");
+                });
+
+            modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.MeasurementValueLimit", b =>
+                {
+                    b.HasOne("HousePlantMeasurementsApi.Data.Entities.Plant", "Plant")
+                        .WithMany("MeasurementValueLimits")
+                        .HasForeignKey("PlantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Plant");
                 });
@@ -236,6 +294,18 @@ namespace HousePlantMeasurementsApi.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.Measurement", b =>
+                {
+                    b.Navigation("MeasurementValues");
+                });
+
+            modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.Plant", b =>
+                {
+                    b.Navigation("MeasurementValueLimits");
+
+                    b.Navigation("Measurements");
                 });
 #pragma warning restore 612, 618
         }

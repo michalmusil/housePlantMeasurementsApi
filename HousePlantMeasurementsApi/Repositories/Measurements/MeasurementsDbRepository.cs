@@ -15,17 +15,23 @@ namespace HousePlantMeasurementsApi.Repositories.Measurements
 
         public async Task<IEnumerable<Measurement>> GetByPlantId(int plantId)
         {
-            return await dbContext.Measurements.Where(m => m.PlantId == plantId).ToListAsync();
+            return await dbContext.Measurements.Where(m => m.PlantId == plantId)
+                .Include(m => m.MeasurementValues)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Measurement>> GetByDeviceId(int deviceId)
         {
-            return await dbContext.Measurements.Where(m => m.DeviceId == deviceId).ToListAsync();
+            return await dbContext.Measurements.Where(m => m.DeviceId == deviceId)
+                .Include(m => m.MeasurementValues)
+                .ToListAsync();
         }
 
         public async Task<Measurement?> GetById(int id)
         {
-            return await dbContext.Measurements.Where(m => m.Id == id).FirstOrDefaultAsync();
+            return await dbContext.Measurements.Where(m => m.Id == id)
+                .Include(m => m.MeasurementValues)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<bool> AddMeasurement(Measurement measurement)

@@ -22,21 +22,15 @@ namespace HousePlantMeasurementsApi.Data.Entities
 
         public string? TitleImagePath { get; set; }
 
-        public double? MoistureLowLimit { get; set; }
-        public double? MoistureHighLimit { get; set; }
-
-        public double? TemperatureLowLimit { get; set; }
-        public double? TemperatureHighLimit { get; set; }
-
-        public double? LightIntensityLowLimit { get; set; }
-        public double? LightIntensityHighLimit { get; set; }
-
         [Required]
         public int UserId { get; set; }
         [Required]
         public User User { get; set; }
 
-        List<Measurement> Measurements { get; set; }
+
+        public List<Measurement> Measurements { get; set; }
+
+        public List<MeasurementValueLimit> MeasurementValueLimits { get; set; }
     }
 }
 

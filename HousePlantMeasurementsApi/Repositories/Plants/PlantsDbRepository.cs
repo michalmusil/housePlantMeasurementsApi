@@ -15,17 +15,23 @@ namespace HousePlantMeasurementsApi.Repositories.Plants
 
         public async Task<IEnumerable<Plant>> GetAllPlants()
         {
-            return await dbContext.Plants.ToListAsync();
+            return await dbContext.Plants
+                .Include(p => p.MeasurementValueLimits)
+                .ToListAsync();
         }
 
         public async Task<Plant?> GetById(int id)
         {
-            return await dbContext.Plants.Where(p => p.Id == id).FirstOrDefaultAsync();
+            return await dbContext.Plants.Where(p => p.Id == id)
+                .Include(p => p.MeasurementValueLimits)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Plant>> GetByUserId(int userId)
         {
-            var plants = await dbContext.Plants.Where(p => p.UserId == userId).ToListAsync();
+            var plants = await dbContext.Plants.Where(p => p.UserId == userId)
+                .Include(p => p.MeasurementValueLimits)
+                .ToListAsync();
             return plants;
         }
 
@@ -39,6 +45,13 @@ namespace HousePlantMeasurementsApi.Repositories.Plants
         {
             plant.Updated = DateTime.UtcNow;
             dbContext.Update(plant);
+            return await dbContext.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> RemoveLimitsOfPlant(Plant plant)
+        {
+            var limitsToRemove = dbContext.MeasurementValueLimits.Where(l => l.PlantId == plant.Id);
+            dbContext.MeasurementValueLimits.RemoveRange(limitsToRemove);
             return await dbContext.SaveChangesAsync() > 0;
         }
 

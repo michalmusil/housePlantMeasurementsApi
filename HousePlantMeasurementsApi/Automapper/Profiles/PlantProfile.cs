@@ -12,6 +12,7 @@ namespace HousePlantMeasurementsApi.Automapper.Profiles
             CreateMap<Plant, GetPlantDto>()
                 .ForMember(dto => dto.ImageName, opt => opt.MapFrom(plant => plant.TitleImagePath));
             CreateMap<PostPlantDto, Plant>();
+            CreateMap<PutPlantDto, Plant>();
         }
     }
 }

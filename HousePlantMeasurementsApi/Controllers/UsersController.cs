@@ -41,7 +41,7 @@ namespace HousePlantMeasurementsApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GetUserDto>>> UsersList()
         {
-            if (!await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin))
+            if (!await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN))
             {
                 return Unauthorized(new { message = "Endpoint accessible for admin users only" });
             }
@@ -54,7 +54,7 @@ namespace HousePlantMeasurementsApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetUserDto>> GetById(int id)
         {
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
             var asksForHimself = await authService.SignedUserHasId(HttpContext.User, id);
 
             if (!isAdmin && !asksForHimself)
@@ -104,7 +104,7 @@ namespace HousePlantMeasurementsApi.Controllers
         public async Task<ActionResult<GetUserDto>> UpdateUser(PutUserDto userPut)
         {
             var userToUpdate = await usersRepository.GetById(userPut.Id);
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
             var asksForHimself = await authService.SignedUserHasId(HttpContext.User, userPut.Id);
 
             if (userToUpdate == null)
@@ -118,7 +118,7 @@ namespace HousePlantMeasurementsApi.Controllers
 
 
             // Catching if non-admin user tries to change his own role - not allowed
-            if (userPut.Role == UserRole.User || userPut.Role == UserRole.Admin)
+            if (userPut.Role == UserRole.USER || userPut.Role == UserRole.ADMIN)
             {
                 if (!isAdmin)
                 {
@@ -152,7 +152,7 @@ namespace HousePlantMeasurementsApi.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(int id)
         {
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
             var asksForHimself = await authService.SignedUserHasId(HttpContext.User, id);
 
             if (!isAdmin && !asksForHimself)

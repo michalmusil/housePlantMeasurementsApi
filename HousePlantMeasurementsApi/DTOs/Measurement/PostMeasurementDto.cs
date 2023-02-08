@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using HousePlantMeasurementsApi.Data.Entities;
 
 namespace HousePlantMeasurementsApi.DTOs.Measurement
 {
@@ -12,11 +13,7 @@ namespace HousePlantMeasurementsApi.DTOs.Measurement
         public string DeviceMacAddress { get; set; }
 
         [Required]
-        public double Moisture { get; set; }
-        [Required]
-        public double Temperature { get; set; }
-        [Required]
-        public double LightIntensity { get; set; }
+        public List<PostMeasurementDto> MeasurementValues { get; set; }
     }
 }
 

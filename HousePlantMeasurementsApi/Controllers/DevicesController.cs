@@ -44,7 +44,7 @@ namespace HousePlantMeasurementsApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GetDeviceDto>>> GetAllDevices([FromQuery] bool? assigned)
         {
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
 
             if (!isAdmin)
             {
@@ -66,7 +66,7 @@ namespace HousePlantMeasurementsApi.Controllers
                 return NotFound();
             }
 
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
             var asksForHimself = await authService.SignedUserHasId(HttpContext.User, userId);
 
             if (!isAdmin && !asksForHimself)
@@ -82,7 +82,7 @@ namespace HousePlantMeasurementsApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetDeviceDto>> GetDeviceById(int id)
         {
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
             var foundDevice = await devicesRepository.GetById(id);
 
             if (foundDevice == null)
@@ -103,7 +103,7 @@ namespace HousePlantMeasurementsApi.Controllers
         [HttpPost]
         public async Task<ActionResult<GetDeviceDto>> PostNewDevice(PostDeviceDto devicePost)
         {
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
 
             if (!isAdmin)
             {
@@ -196,7 +196,7 @@ namespace HousePlantMeasurementsApi.Controllers
                 return NotFound("Device with this id does not exist");
             }
 
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
             var asksForHimself = await authService.SignedUserHasId(HttpContext.User, foundDevice.UserId ?? -1);
 
             if (!isAdmin && !asksForHimself)
@@ -233,7 +233,7 @@ namespace HousePlantMeasurementsApi.Controllers
                 return StatusCode(403, "Device must have same owner as the plant it's being assigned to");
             }
 
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
             var isOwnerOfDevice = await authService.SignedUserHasId(HttpContext.User, foundDevice.UserId ?? -1);
             var isOwnerOfPlant = await authService.SignedUserHasId(HttpContext.User, plantToAssign.UserId);
 

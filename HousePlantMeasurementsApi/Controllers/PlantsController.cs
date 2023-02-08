@@ -8,6 +8,7 @@ using HousePlantMeasurementsApi.Repositories.Plants;
 using HousePlantMeasurementsApi.Repositories.Users;
 using HousePlantMeasurementsApi.Services.AuthService;
 using HousePlantMeasurementsApi.Services.ImageService;
+using HousePlantMeasurementsApi.Services.ValidationHelperService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
@@ -26,6 +27,7 @@ namespace HousePlantMeasurementsApi.Controllers
         private readonly IUsersRepository usersRepository;
         private readonly IAuthService authService;
         private readonly IImageService imageService;
+        private readonly IMeasurementValidator measurementValidator;
 
         public PlantsController(
             ILogger<PlantsController> logger,
@@ -33,7 +35,8 @@ namespace HousePlantMeasurementsApi.Controllers
             IPlantsRepository plantsRepository,
             IUsersRepository usersRepository,
             IAuthService authService,
-            IImageService imageService)
+            IImageService imageService,
+            IMeasurementValidator measurementValidator)
         {
             this.logger = logger;
             this.mapper = mapper;
@@ -41,6 +44,7 @@ namespace HousePlantMeasurementsApi.Controllers
             this.usersRepository = usersRepository;
             this.authService = authService;
             this.imageService = imageService;
+            this.measurementValidator = measurementValidator;
         }
 
 
@@ -54,7 +58,7 @@ namespace HousePlantMeasurementsApi.Controllers
                 return NotFound();
             }
 
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
             var asksForHimself = await authService.SignedUserHasId(HttpContext.User, userId);
             
             if (!isAdmin && !asksForHimself)
@@ -69,7 +73,7 @@ namespace HousePlantMeasurementsApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetPlantDto>> GetById(int id)
         {
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
             var foundPlant = await plantsRepository.GetById(id);
 
             if (foundPlant == null)
@@ -90,7 +94,7 @@ namespace HousePlantMeasurementsApi.Controllers
         [HttpPost]
         public async Task<ActionResult<GetPlantDto>> AddNewPlant(PostPlantDto plantPost)
         {
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
             var asksForHimself = await authService.SignedUserHasId(HttpContext.User, plantPost.UserId);
 
             var plantOwner = await usersRepository.GetById(plantPost.UserId);
@@ -116,6 +120,12 @@ namespace HousePlantMeasurementsApi.Controllers
                 return BadRequest();
             }
 
+            if(newPlant.MeasurementValueLimits.Count > 0 &&
+                !measurementValidator.AreMeasurementLimitsValid(newPlant.MeasurementValueLimits))
+            {
+                return BadRequest();
+            }
+
             var savedPlant = await plantsRepository.AddPlant(newPlant);
 
             return Ok(mapper.Map<GetPlantDto>(newPlant));
@@ -124,7 +134,7 @@ namespace HousePlantMeasurementsApi.Controllers
         [HttpPut]
         public async Task<ActionResult<GetPlantDto>> UpdatePlant(PutPlantDto plantPut)
         {
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
             var plantToUpdate = await plantsRepository.GetById(plantPut.Id);
 
             if (plantToUpdate == null)
@@ -144,12 +154,19 @@ namespace HousePlantMeasurementsApi.Controllers
             plantToUpdate.Description = plantPut.Description ?? plantToUpdate.Description;
             plantToUpdate.Name = plantPut.Name ?? plantToUpdate.Name;
 
-            plantToUpdate.MoistureLowLimit = plantPut.MoistureLowLimit ?? plantToUpdate.MoistureLowLimit;
-            plantToUpdate.MoistureHighLimit = plantPut.MoistureHighLimit ?? plantToUpdate.MoistureHighLimit;
-            plantToUpdate.TemperatureLowLimit = plantPut.TemperatureLowLimit ?? plantToUpdate.TemperatureLowLimit;
-            plantToUpdate.TemperatureHighLimit = plantPut.TemperatureHighLimit ?? plantToUpdate.TemperatureHighLimit;
-            plantToUpdate.LightIntensityLowLimit = plantPut.LightIntensityLowLimit ?? plantToUpdate.LightIntensityLowLimit;
-            plantToUpdate.LightIntensityHighLimit = plantPut.LightIntensityHighLimit ?? plantToUpdate.LightIntensityHighLimit;
+
+            var mappedPut = mapper.Map<Plant>(plantPut);
+            if( mappedPut != null &&
+                mappedPut.MeasurementValueLimits != null &&
+                mappedPut.MeasurementValueLimits.Count > 0)
+            {
+                if (!measurementValidator.AreMeasurementLimitsValid(mappedPut.MeasurementValueLimits))
+                {
+                    return BadRequest();
+                }
+                var limitsRemoved =  await plantsRepository.RemoveLimitsOfPlant(plantToUpdate);
+                plantToUpdate.MeasurementValueLimits = mappedPut.MeasurementValueLimits;
+            }
 
             var updated = await plantsRepository.UpdatePlant(plantToUpdate);
 
@@ -159,7 +176,7 @@ namespace HousePlantMeasurementsApi.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeletePlant(int id)
         {
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
             var plantToDelete = await plantsRepository.GetById(id);
 
             if (plantToDelete == null)
@@ -186,7 +203,7 @@ namespace HousePlantMeasurementsApi.Controllers
         [HttpGet("/images/{plantId}", Name = "GetPlantImage")]
         public async Task<ActionResult> GetPlantImage(int plantId)
         {
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
             var plant = await plantsRepository.GetById(plantId);
 
             if (plant == null)
@@ -220,7 +237,7 @@ namespace HousePlantMeasurementsApi.Controllers
         [HttpPut("/images")]
         public async Task<ActionResult> SetPlantTitleImage(int plantId, IFormFile image)
         {
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
             var plant = await plantsRepository.GetById(plantId);
 
             if (plant == null)

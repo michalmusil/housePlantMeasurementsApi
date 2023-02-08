@@ -50,10 +50,10 @@
     <None Remove="DTOs\Device\" />
     <None Remove="Repositories\Measurements\" />
     <None Remove="DTOs\Measurement\" />
-    <None Remove="Services\ValidationHelperService\" />
     <None Remove="Resources\" />
     <None Remove="Resources\PlantImages\" />
     <None Remove="Services\ImageService\" />
+    <None Remove="DTOs\MeasurementValueLimit\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="db_data\" />
@@ -74,9 +74,9 @@
     <Folder Include="DTOs\Device\" />
     <Folder Include="Repositories\Measurements\" />
     <Folder Include="DTOs\Measurement\" />
-    <Folder Include="Services\ValidationHelperService\" />
     <Folder Include="Resources\" />
     <Folder Include="Resources\PlantImages\" />
     <Folder Include="Services\ImageService\" />
+    <Folder Include="DTOs\MeasurementValueLimit\" />
   </ItemGroup>
 </Project>

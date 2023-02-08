@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using HousePlantMeasurementsApi.Data.Entities;
+using HousePlantMeasurementsApi.DTOs.MeasurementValueLimit;
 
 namespace HousePlantMeasurementsApi.DTOs.Plant
 {
@@ -12,17 +13,9 @@ namespace HousePlantMeasurementsApi.DTOs.Plant
         public string? Name { get; set; }
         public string? Species { get; set; }
         public string? Description { get; set; }
-
-        public double? MoistureLowLimit { get; set; }
-        public double? MoistureHighLimit { get; set; }
-
-        public double? TemperatureLowLimit { get; set; }
-        public double? TemperatureHighLimit { get; set; }
-
-        public double? LightIntensityLowLimit { get; set; }
-        public double? LightIntensityHighLimit { get; set; }
-
         public string? ImageName { get; set; }
+
+        public List<GetMeasurementValueLimitDto> MeasurementValueLimits { get; set; }
 
     }
 }

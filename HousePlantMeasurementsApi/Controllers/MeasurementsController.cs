@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Metrics;
 using AutoMapper;
 using HouseDeviceMeasurementsApi.Repositories.Devices;
 using HousePlantMeasurementsApi.Data.Entities;
@@ -26,7 +27,7 @@ namespace HousePlantMeasurementsApi.Controllers
         private readonly IDevicesRepository devicesRepository;
         private readonly IPlantsRepository plantsRepository;
         private readonly IAuthService authService;
-        private readonly IValidationHelperService validationHelperService;
+        private readonly IMeasurementValidator measurementValidator;
 
         public MeasurementsController(
             ILogger<PlantsController> logger,
@@ -35,7 +36,7 @@ namespace HousePlantMeasurementsApi.Controllers
             IDevicesRepository devicesRepository,
             IPlantsRepository plantsRepository,
             IAuthService authService,
-            IValidationHelperService validationHelperService)
+            IMeasurementValidator measurementValidator)
         {
             this.logger = logger;
             this.mapper = mapper;
@@ -43,7 +44,7 @@ namespace HousePlantMeasurementsApi.Controllers
             this.devicesRepository = devicesRepository;
             this.plantsRepository = plantsRepository;
             this.authService = authService;
-            this.validationHelperService = validationHelperService;
+            this.measurementValidator = measurementValidator;
         }
 
         [HttpGet("plant/{plantId}")]
@@ -56,7 +57,7 @@ namespace HousePlantMeasurementsApi.Controllers
                 return NotFound();
             }
 
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
             var asksForHimself = await authService.SignedUserHasId(HttpContext.User, plant.UserId);
 
             if (!isAdmin && !asksForHimself)
@@ -72,7 +73,7 @@ namespace HousePlantMeasurementsApi.Controllers
         [HttpGet("device/{deviceId}")]
         public async Task<ActionResult<IEnumerable<GetMeasurementDto>>> GetAllMeasurementsOfDevice(int deviceId)
         {
-            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.Admin);
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
 
             if (!isAdmin)
             {
@@ -127,16 +128,6 @@ namespace HousePlantMeasurementsApi.Controllers
                 return Ok();
             }
 
-            if (
-                !(validationHelperService.IsBetweenBoundries(plant.TemperatureLowLimit, measurementPost.Temperature, plant.TemperatureHighLimit) &&
-                  validationHelperService.IsBetweenBoundries(plant.MoistureLowLimit, measurementPost.Moisture, plant.MoistureHighLimit) &&
-                  validationHelperService.IsBetweenBoundries(plant.LightIntensityLowLimit, measurementPost.LightIntensity, plant.LightIntensityHighLimit))
-                )
-            {
-                //Measurement accepted but not saved - values out of set boundries
-                return Ok();
-            }
-
             Measurement? newMeasurement = null;
             try
             { 
@@ -148,6 +139,12 @@ namespace HousePlantMeasurementsApi.Controllers
             {
                 logger.LogInformation($"Could not parse posted measurement: {ex.ToString()}");
                 //Measurement has not been parsed properly
+                return Ok();
+            }
+
+            if (!measurementValidator.IsMeasurementValid(newMeasurement, plant))
+            {
+                //Measurement accepted but not saved - measurement is invalid
                 return Ok();
             }
 

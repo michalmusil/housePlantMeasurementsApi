@@ -1,32 +1,32 @@
 ﻿<Properties StartupConfiguration="{C5E3879F-A91D-415A-AFD4-6ADC3D077C28}|Default">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/michalmusil/MENDELU/Bakalarka/SledovaniCharakteristikProstrediPokojovychRostlin/Code/housePlantMeasurementsApi/HousePlantMeasurementsApi/Controllers/DevicesController.cs" relfile="HousePlantMeasurementsApi/Controllers/DevicesController.cs" line="148" column="1" />
+      <Breakpoint file="/Users/michalmusil/MENDELU/Bakalarka/SledovaniCharakteristikProstrediPokojovychRostlin/Code/housePlantMeasurementsApi/HousePlantMeasurementsApi/Controllers/PlantsController.cs" relfile="HousePlantMeasurementsApi/Controllers/PlantsController.cs" line="167" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/Controllers/MeasurementsController.cs">
     <Files>
-      <File FileName="HousePlantMeasurementsApi/Controllers/AuthController.cs" Line="15" Column="9" />
-      <File FileName="HousePlantMeasurementsApi/Program.cs" Line="125" Column="5" />
-      <File FileName="HousePlantMeasurementsApi/Controllers/DevicesController.cs" Line="1" Column="1" />
+      <File FileName="HousePlantMeasurementsApi/Controllers/PlantsController.cs" Line="126" Column="37" />
+      <File FileName="HousePlantMeasurementsApi/Services/MeasurementValidator/IMeasurementValidator.cs" Line="13" Column="97" />
+      <File FileName="HousePlantMeasurementsApi/Services/MeasurementValidator/MeasurementValidator.cs" Line="23" Column="18" />
+      <File FileName="HousePlantMeasurementsApi/DTOs/Plant/PutPlantDto.cs" Line="8" Column="18" />
+      <File FileName="HousePlantMeasurementsApi/Controllers/MeasurementsController.cs" Line="147" Column="78" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="HousePlantMeasurementsApi" expanded="True">
             <Node name="HousePlantMeasurementsApi" expanded="True">
+              <Node name="Automapper" expanded="True" />
               <Node name="Controllers" expanded="True" />
-              <Node name="Data" expanded="True">
-                <Node name="Entities" expanded="True" />
-              </Node>
-              <Node name="Resources" expanded="True">
-                <Node name="PlantImages" expanded="True" />
+              <Node name="DTOs" expanded="True">
+                <Node name="Measurement" expanded="True" />
               </Node>
               <Node name="Services" expanded="True">
-                <Node name="AuthService" expanded="True" />
+                <Node name="MeasurementValidator" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -38,4 +38,5 @@
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.ItemProperties.HousePlantMeasurementsApi PreferredExecutionTarget="/Applications/Firefox.app" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>

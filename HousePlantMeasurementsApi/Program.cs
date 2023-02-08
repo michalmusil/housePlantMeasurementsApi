@@ -91,7 +91,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Dependency injection
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IImageService, ImageService>();
-builder.Services.AddScoped<IValidationHelperService, ValidationHelperService>();
+builder.Services.AddScoped<IMeasurementValidator, MeasurementValidator>();
 builder.Services.AddScoped<IUsersRepository, UsersDbRepository>();
 builder.Services.AddScoped<IPlantsRepository, PlantsDbRepository>();
 builder.Services.AddScoped<IDevicesRepository, DevicesDbRepository>();

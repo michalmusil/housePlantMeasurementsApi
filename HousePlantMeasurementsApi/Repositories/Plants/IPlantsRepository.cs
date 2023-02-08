@@ -15,6 +15,8 @@ namespace HousePlantMeasurementsApi.Repositories.Plants
 
         public Task<bool> UpdatePlant(Plant plant);
 
+        public Task<bool> RemoveLimitsOfPlant(Plant plant);
+
         public Task<bool> DeletePlant(Plant plant);
     }
 }
