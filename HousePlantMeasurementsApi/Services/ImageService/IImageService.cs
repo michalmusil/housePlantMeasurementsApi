@@ -5,7 +5,7 @@ using HousePlantMeasurementsApi.DTOs.User;
 namespace HousePlantMeasurementsApi.Services.ImageService
 {
     public interface IImageService
-    {
+    { 
         public Task<string> SaveImageToFileSystem(IFormFile image);
 
         public Task<bool> RemoveImageFromFileSystem(string imageName);

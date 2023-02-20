@@ -8,8 +8,8 @@ namespace HousePlantMeasurementsApi.Services.ImageService
     public class ImageService: IImageService
     {
         private readonly IWebHostEnvironment environment;
-        private readonly string[] allowedExtensions;
-        private readonly string relativePath;
+        public readonly string[] allowedExtensions;
+        public readonly string relativePath;
 
         public ImageService(IWebHostEnvironment environment)
         {

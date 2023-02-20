@@ -14,15 +14,15 @@ namespace HouseDeviceMeasurementsApi.Repositories.Devices
             this.dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Device>> GetAllDevices(bool? assigned = null)
+        public async Task<IEnumerable<Device>> GetAllDevices(bool? registered = null)
         {
             var devices = dbContext.Devices.AsNoTracking();
 
-            if (assigned == true)
+            if (registered == true)
             {
                 devices = devices.Where(d => d.UserId != null);
             }
-            else if (assigned == false)
+            else if (registered == false)
             {
                 devices = devices.Where(d => d.UserId == null);
             }

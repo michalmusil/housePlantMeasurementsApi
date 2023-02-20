@@ -42,7 +42,7 @@ namespace HousePlantMeasurementsApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetDeviceDto>>> GetAllDevices([FromQuery] bool? assigned)
+        public async Task<ActionResult<IEnumerable<GetDeviceDto>>> GetAllDevices([FromQuery] bool? registered)
         {
             var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
 
@@ -51,7 +51,7 @@ namespace HousePlantMeasurementsApi.Controllers
                 return StatusCode(403, "This endpoint is restricted for admin users only");
             }
 
-            var devices = await devicesRepository.GetAllDevices(assigned);
+            var devices = await devicesRepository.GetAllDevices(registered);
 
             return Ok(mapper.Map<IEnumerable<GetDeviceDto>>(devices));
         }

@@ -61,7 +61,13 @@ namespace HousePlantMeasurementsApi.Services.AuthService
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return new GetAuthDto() { Id = user.Id, Token = tokenString };
+            return new GetAuthDto()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Role = user.Role,
+                Token = tokenString
+            };
 
         }
 

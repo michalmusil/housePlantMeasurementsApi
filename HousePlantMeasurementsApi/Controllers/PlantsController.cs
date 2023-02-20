@@ -67,6 +67,7 @@ namespace HousePlantMeasurementsApi.Controllers
             }
 
             var plants = await plantsRepository.GetByUserId(userId);
+
             return Ok(mapper.Map<IEnumerable<GetPlantDto>>(plants));
         }
 
@@ -152,7 +153,6 @@ namespace HousePlantMeasurementsApi.Controllers
             plantToUpdate.Name = plantPut.Name ?? plantToUpdate.Name;
             plantToUpdate.Species = plantPut.Species ?? plantToUpdate.Species;
             plantToUpdate.Description = plantPut.Description ?? plantToUpdate.Description;
-            plantToUpdate.Name = plantPut.Name ?? plantToUpdate.Name;
 
 
             var mappedPut = mapper.Map<Plant>(plantPut);
@@ -200,7 +200,7 @@ namespace HousePlantMeasurementsApi.Controllers
 
 
 
-        [HttpGet("/images/{plantId}", Name = "GetPlantImage")]
+        [HttpGet("images/{plantId}", Name = "GetPlantImage")]
         public async Task<ActionResult> GetPlantImage(int plantId)
         {
             var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
@@ -234,7 +234,7 @@ namespace HousePlantMeasurementsApi.Controllers
             return File(image, contentType);
         }
 
-        [HttpPut("/images")]
+        [HttpPut("images")]
         public async Task<ActionResult> SetPlantTitleImage(int plantId, IFormFile image)
         {
             var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);

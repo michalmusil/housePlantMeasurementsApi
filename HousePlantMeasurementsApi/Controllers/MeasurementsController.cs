@@ -92,6 +92,14 @@ namespace HousePlantMeasurementsApi.Controllers
             return Ok(mapper.Map<IEnumerable<GetMeasurementDto>>(measurements));
         }
 
+        [HttpGet("types")]
+        public async Task<ActionResult<IEnumerable<GetMeasurementTypeDto>>> GetMeasurementTypes()
+        {
+            var measurementTypes = Enum.GetValues(typeof(MeasurementType));
+
+            return Ok(mapper.Map<IEnumerable<GetMeasurementTypeDto>>(measurementTypes));
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult<GetPlantDto>> PostNewMeasurement(PostMeasurementDto measurementPost)

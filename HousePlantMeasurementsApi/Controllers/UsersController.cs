@@ -118,7 +118,7 @@ namespace HousePlantMeasurementsApi.Controllers
 
 
             // Catching if non-admin user tries to change his own role - not allowed
-            if (userPut.Role == UserRole.USER || userPut.Role == UserRole.ADMIN)
+            if (userPut.Role != null)
             {
                 if (!isAdmin)
                 {

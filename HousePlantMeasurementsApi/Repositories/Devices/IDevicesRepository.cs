@@ -5,7 +5,7 @@ namespace HouseDeviceMeasurementsApi.Repositories.Devices
 {
     public interface IDevicesRepository
     {
-        public Task<IEnumerable<Device>> GetAllDevices(bool? assigned);
+        public Task<IEnumerable<Device>> GetAllDevices(bool? registered);
 
         public Task<Device?> GetById(int id);
 
