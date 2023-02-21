@@ -14,17 +14,43 @@ namespace HousePlantMeasurementsApi.Repositories.Measurements
             this.dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Measurement>> GetByPlantId(int plantId)
+        public async Task<IEnumerable<Measurement>> GetByPlantId(int plantId, DateTime? from, DateTime? to)
         {
-            return await dbContext.Measurements.Where(m => m.PlantId == plantId)
-                .Include(m => m.MeasurementValues)
+            var measurements = dbContext.Measurements.Where(m => m.PlantId == plantId)
+                .Include(m => m.MeasurementValues).AsNoTracking();
+
+            if(from != null)
+            {
+                measurements = measurements.Where(m => m.Taken >= from);
+            }
+
+            if (to != null)
+            {
+                measurements = measurements.Where(m => m.Taken <= to);
+            }
+
+            return await measurements
+                .OrderBy(m => m.Taken)
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Measurement>> GetByDeviceId(int deviceId)
+        public async Task<IEnumerable<Measurement>> GetByDeviceId(int deviceId, DateTime? from, DateTime? to)
         {
-            return await dbContext.Measurements.Where(m => m.DeviceId == deviceId)
-                .Include(m => m.MeasurementValues)
+            var measurements = dbContext.Measurements.Where(m => m.DeviceId == deviceId)
+                .Include(m => m.MeasurementValues).AsNoTracking();
+
+            if (from != null)
+            {
+                measurements = measurements.Where(m => m.Taken >= from);
+            }
+
+            if (to != null)
+            {
+                measurements = measurements.Where(m => m.Taken <= to);
+            }
+
+            return await measurements
+                .OrderBy(m => m.Taken)
                 .ToListAsync();
         }
 

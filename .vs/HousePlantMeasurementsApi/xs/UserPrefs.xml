@@ -1,12 +1,20 @@
 ﻿<Properties StartupConfiguration="{C5E3879F-A91D-415A-AFD4-6ADC3D077C28}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/Controllers/MeasurementsController.cs">
+  <MonoDevelop.Ide.ItemProperties.HousePlantMeasurementsApi PreferredExecutionTarget="/Applications/Firefox.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/Repositories/Measurements/MeasurementsDbRepository.cs">
     <Files>
       <File FileName="HousePlantMeasurementsApi/Services/ImageService/ImageService.cs" Line="8" Column="36" />
       <File FileName="HousePlantMeasurementsApi/Automapper/Profiles/PlantProfile.cs" Line="14" Column="52" />
       <File FileName="HousePlantMeasurementsApi/Data/Entities/Plant.cs" Line="19" Column="1" />
       <File FileName="HousePlantMeasurementsApi/Controllers/PlantsController.cs" Line="68" Column="1" />
       <File FileName="HousePlantMeasurementsApi/Services/ImageService/IImageService.cs" Line="8" Column="7" />
-      <File FileName="HousePlantMeasurementsApi/Controllers/MeasurementsController.cs" Line="72" Column="1" />
+      <File FileName="HousePlantMeasurementsApi/Controllers/MeasurementsController.cs" Line="112" Column="26" />
+      <File FileName="HousePlantMeasurementsApi/Repositories/Measurements/MeasurementsDbRepository.cs" Line="29" Column="65" />
+      <File FileName="HousePlantMeasurementsApi/Repositories/Devices/DevicesDbRepository.cs" Line="19" Column="45" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -14,10 +22,8 @@
           <Node name="HousePlantMeasurementsApi" expanded="True">
             <Node name="HousePlantMeasurementsApi" expanded="True">
               <Node name="Controllers" expanded="True" />
-              <Node name="Data" expanded="True">
-                <Node name="Entities" expanded="True" />
-              </Node>
               <Node name="Repositories" expanded="True">
+                <Node name="Devices" expanded="True" />
                 <Node name="Measurements" expanded="True" />
               </Node>
               <Node name="Services" expanded="True">
@@ -33,11 +39,5 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.ItemProperties.HousePlantMeasurementsApi PreferredExecutionTarget="/Applications/Firefox.app" />
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

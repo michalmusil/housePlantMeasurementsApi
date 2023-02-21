@@ -7,9 +7,9 @@ namespace HousePlantMeasurementsApi.Repositories.Measurements
     public interface IMeasurementsRepository
     {
 
-        public Task<IEnumerable<Measurement>> GetByPlantId(int plantId);
+        public Task<IEnumerable<Measurement>> GetByPlantId(int plantId, DateTime? from, DateTime? to);
 
-        public Task<IEnumerable<Measurement>> GetByDeviceId(int deviceId);
+        public Task<IEnumerable<Measurement>> GetByDeviceId(int deviceId, DateTime? from, DateTime? to);
 
         public Task<Measurement?> GetById(int id);
 

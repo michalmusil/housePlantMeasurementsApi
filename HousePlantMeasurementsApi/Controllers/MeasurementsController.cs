@@ -48,7 +48,10 @@ namespace HousePlantMeasurementsApi.Controllers
         }
 
         [HttpGet("plant/{plantId}")]
-        public async Task<ActionResult<IEnumerable<GetMeasurementDto>>> GetAllMeasurementsOfPlant(int plantId)
+        public async Task<ActionResult<IEnumerable<GetMeasurementDto>>> GetAllMeasurementsOfPlant(
+            int plantId,
+            [FromQuery] DateTime? from,
+            [FromQuery] DateTime? to)
         {
             var plant = await plantsRepository.GetById(plantId);
 
@@ -65,7 +68,7 @@ namespace HousePlantMeasurementsApi.Controllers
                 return StatusCode(403, "Only owner of this plant or admin can view its measurements");
             }
 
-            var measurements = await measurementsRepository.GetByPlantId(plant.Id);
+            var measurements = await measurementsRepository.GetByPlantId(plant.Id, from, to);
 
             return Ok(mapper.Map<IEnumerable<GetMeasurementDto>>(measurements));
         }
@@ -105,7 +108,10 @@ namespace HousePlantMeasurementsApi.Controllers
         }
 
         [HttpGet("device/{deviceId}")]
-        public async Task<ActionResult<IEnumerable<GetMeasurementDto>>> GetAllMeasurementsOfDevice(int deviceId)
+        public async Task<ActionResult<IEnumerable<GetMeasurementDto>>> GetAllMeasurementsOfDevice(
+            int deviceId,
+            [FromQuery] DateTime? from,
+            [FromQuery] DateTime? to)
         {
             var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
 
@@ -121,7 +127,7 @@ namespace HousePlantMeasurementsApi.Controllers
                 return NotFound();
             }
 
-            var measurements = await measurementsRepository.GetByDeviceId(device.Id);
+            var measurements = await measurementsRepository.GetByDeviceId(device.Id, from, to);
 
             return Ok(mapper.Map<IEnumerable<GetMeasurementDto>>(measurements));
         }
