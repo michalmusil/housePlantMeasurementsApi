@@ -8,7 +8,7 @@ namespace HousePlantMeasurementsApi.Services.ValidationHelperService
     {
         public bool IsMeasurementValid(Measurement measurement, Plant plant);
 
-        public bool IsMeasurementTypeValid(MeasurementType measurementType);
+        public bool IsMeasurementTypeValid(MeasurementType? measurementType);
 
         public bool AreMeasurementLimitsValid(List<MeasurementValueLimit> measurementValueLimits);
     }

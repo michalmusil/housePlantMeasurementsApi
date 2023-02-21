@@ -70,6 +70,40 @@ namespace HousePlantMeasurementsApi.Controllers
             return Ok(mapper.Map<IEnumerable<GetMeasurementDto>>(measurements));
         }
 
+        [HttpGet("plant/latest/{plantId}")]
+        public async Task<ActionResult<GetMeasurementDto>> GetLatestMeasurementOfPlant(int plantId, [FromQuery] MeasurementType measurementType)
+        {
+            var plant = await plantsRepository.GetById(plantId);
+            var measurementTypeValid = measurementValidator.IsMeasurementTypeValid(measurementType);
+           
+            if (plant == null)
+            {
+                return NotFound();
+            }
+
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
+            var asksForHimself = await authService.SignedUserHasId(HttpContext.User, plant.UserId);
+
+            if (!isAdmin && !asksForHimself)
+            {
+                return StatusCode(403, "Only owner of this plant or admin can view its measurements");
+            }
+
+            if (!measurementTypeValid)
+            {
+                return BadRequest("Measurement type not valid");
+            }
+
+            var measurement = await measurementsRepository.GetMostRecentByMeasurementType(plantId, measurementType);
+
+            if (measurement == null)
+            {
+                return NotFound("No measurement found");
+            }
+
+            return Ok(mapper.Map<GetMeasurementDto>(measurement));
+        }
+
         [HttpGet("device/{deviceId}")]
         public async Task<ActionResult<IEnumerable<GetMeasurementDto>>> GetAllMeasurementsOfDevice(int deviceId)
         {

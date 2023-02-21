@@ -1,6 +1,7 @@
 ﻿using System;
 using HousePlantMeasurementsApi.Data;
 using HousePlantMeasurementsApi.Data.Entities;
+using HousePlantMeasurementsApi.Data.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace HousePlantMeasurementsApi.Repositories.Measurements
@@ -27,6 +28,27 @@ namespace HousePlantMeasurementsApi.Repositories.Measurements
                 .ToListAsync();
         }
 
+        public async Task<Measurement?> GetMostRecentByMeasurementType(int plantId, MeasurementType measurementType)
+        {
+            var foundMeasurement = await dbContext.MeasurementValues
+                .Where(v => v.Measurement.PlantId == plantId && v.Type == measurementType)
+                .Select(v => v.Measurement)
+                .OrderByDescending(m => m.Taken)
+                .FirstOrDefaultAsync();
+
+            if(foundMeasurement == null)
+            {
+                return null;
+            }
+
+            var measurementWithValues = await dbContext.Measurements
+                .Where(m => m.Id == foundMeasurement.Id)
+                .Include(m => m.MeasurementValues)
+                .FirstOrDefaultAsync();
+
+            return measurementWithValues;
+        }
+
         public async Task<Measurement?> GetById(int id)
         {
             return await dbContext.Measurements.Where(m => m.Id == id)
@@ -46,7 +68,6 @@ namespace HousePlantMeasurementsApi.Repositories.Measurements
             dbContext.Remove(measurement);
             return await dbContext.SaveChangesAsync() > 0;
         }
-
 
     }
 }

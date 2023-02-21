@@ -36,8 +36,12 @@ namespace HousePlantMeasurementsApi.Services.ValidationHelperService
             return true;
         }
 
-        public bool IsMeasurementTypeValid(MeasurementType measurementType)
+        public bool IsMeasurementTypeValid(MeasurementType? measurementType)
         {
+            if(measurementType == null)
+            {
+                return false;
+            }
             return Enum.IsDefined(typeof(MeasurementType), measurementType);
         }
 
