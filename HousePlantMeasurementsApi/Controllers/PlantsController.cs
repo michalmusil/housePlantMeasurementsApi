@@ -117,7 +117,7 @@ namespace HousePlantMeasurementsApi.Controllers
             }
             catch(Exception ex)
             {
-                logger.LogInformation($"Adding plant not successfull: {ex.ToString()}");
+                logger.LogInformation($"Creating a plant not successfull: {ex.ToString()}");
                 return BadRequest();
             }
 
@@ -129,7 +129,13 @@ namespace HousePlantMeasurementsApi.Controllers
 
             var savedPlant = await plantsRepository.AddPlant(newPlant);
 
-            return Ok(mapper.Map<GetPlantDto>(newPlant));
+            if(savedPlant == null)
+            {
+                logger.LogInformation($"Saving a new plant has failed");
+                return BadRequest();
+            }
+
+            return Ok(mapper.Map<GetPlantDto>(savedPlant));
         }
 
         [HttpPut]

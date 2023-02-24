@@ -35,10 +35,15 @@ namespace HousePlantMeasurementsApi.Repositories.Plants
             return plants;
         }
 
-        public async Task<bool> AddPlant(Plant plant)
+        public async Task<Plant?> AddPlant(Plant plant)
         {
             dbContext.Add(plant);
-            return await dbContext.SaveChangesAsync() > 0;
+            var savedSuccessfully = await dbContext.SaveChangesAsync() > 0;
+            if (savedSuccessfully)
+            {
+                return plant;
+            }
+            return null;
         }
 
         public async Task<bool> UpdatePlant(Plant plant)

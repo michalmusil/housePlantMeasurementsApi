@@ -37,10 +37,15 @@ namespace HousePlantMeasurementsApi.Repositories.Users
             return user;
         }
 
-        public async Task<bool> AddUser(User user)
+        public async Task<User?> AddUser(User user)
         {
             DbContext.Add(user);
-            return await DbContext.SaveChangesAsync() > 0;
+            var savedSuccessfully = await DbContext.SaveChangesAsync() > 0;
+            if (savedSuccessfully)
+            {
+                return user;
+            }
+            return null;
         }
 
         public async Task<bool> UpdateUser(User user)

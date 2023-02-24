@@ -82,11 +82,16 @@ namespace HousePlantMeasurementsApi.Repositories.Measurements
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<bool> AddMeasurement(Measurement measurement)
+        public async Task<Measurement?> AddMeasurement(Measurement measurement)
         {
             measurement.Taken = DateTime.UtcNow;
             dbContext.Add(measurement);
-            return await dbContext.SaveChangesAsync() > 0;
+            var savedSuccessfully = await dbContext.SaveChangesAsync() > 0;
+            if (savedSuccessfully)
+            {
+                return measurement;
+            }
+            return null;
         }
 
         public async Task<bool> DeleteMeasurement(Measurement measurement)

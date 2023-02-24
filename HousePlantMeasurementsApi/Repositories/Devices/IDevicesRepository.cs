@@ -13,7 +13,7 @@ namespace HouseDeviceMeasurementsApi.Repositories.Devices
 
         public Task<IEnumerable<Device>> GetByUserId(int userId);
 
-        public Task<bool> AddDevice(Device device);
+        public Task<Device?> AddDevice(Device device);
 
         public Task<bool> UpdateDevice(Device device);
 

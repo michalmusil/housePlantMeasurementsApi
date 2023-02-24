@@ -185,7 +185,7 @@ namespace HousePlantMeasurementsApi.Controllers
             }
             catch (Exception ex)
             {
-                logger.LogInformation($"Could not parse posted measurement: {ex.ToString()}");
+                logger.LogInformation($"Creating a new measurement failed: {ex.ToString()}");
                 //Measurement has not been parsed properly
                 return Ok();
             }
@@ -196,8 +196,15 @@ namespace HousePlantMeasurementsApi.Controllers
                 return Ok();
             }
 
-            var saved = await measurementsRepository.AddMeasurement(newMeasurement);
-            return Ok(mapper.Map<GetMeasurementDto>(newMeasurement));
+            var savedMeasurement = await measurementsRepository.AddMeasurement(newMeasurement);
+
+            if(savedMeasurement == null)
+            {
+                logger.LogInformation($"Saving a new measurement failed");
+                return BadRequest();
+            }
+
+            return Ok(mapper.Map<GetMeasurementDto>(savedMeasurement));
         }
 
     }

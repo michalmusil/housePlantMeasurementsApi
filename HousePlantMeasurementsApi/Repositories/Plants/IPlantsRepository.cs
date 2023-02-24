@@ -11,7 +11,7 @@ namespace HousePlantMeasurementsApi.Repositories.Plants
 
         public Task<IEnumerable<Plant>> GetByUserId(int userId);
 
-        public Task<bool> AddPlant(Plant plant);
+        public Task<Plant?> AddPlant(Plant plant);
 
         public Task<bool> UpdatePlant(Plant plant);
 

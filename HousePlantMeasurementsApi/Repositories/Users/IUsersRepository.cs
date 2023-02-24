@@ -11,7 +11,7 @@ namespace HousePlantMeasurementsApi.Repositories.Users
 
         public Task<User> GetByEmail(string email);
 
-        public Task<bool> AddUser(User user);
+        public Task<User?> AddUser(User user);
 
         public Task<bool> UpdateUser(User user);
 

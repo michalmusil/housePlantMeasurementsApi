@@ -95,9 +95,15 @@ namespace HousePlantMeasurementsApi.Controllers
                 return BadRequest();
             }
 
-            var saved = await usersRepository.AddUser(newUser);
+            var savedUser = await usersRepository.AddUser(newUser);
 
-            return Ok(mapper.Map<GetUserDto>(newUser));
+            if(savedUser == null)
+            {
+                logger.LogInformation($"Saving a new plant has failed");
+                return BadRequest();
+            }
+
+            return Ok(mapper.Map<GetUserDto>(savedUser));
         }
 
         [HttpPut]

@@ -15,7 +15,7 @@ namespace HousePlantMeasurementsApi.Repositories.Measurements
 
         public Task<Measurement?> GetMostRecentByMeasurementType(int plantId, MeasurementType measurementType);
 
-        public Task<bool> AddMeasurement(Measurement measurement);
+        public Task<Measurement?> AddMeasurement(Measurement measurement);
 
         public Task<bool> DeleteMeasurement(Measurement measurement);
     }

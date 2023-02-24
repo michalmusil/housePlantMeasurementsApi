@@ -46,10 +46,15 @@ namespace HouseDeviceMeasurementsApi.Repositories.Devices
             return devices;
         }
 
-        public async Task<bool> AddDevice(Device device)
+        public async Task<Device?> AddDevice(Device device)
         {
             dbContext.Add(device);
-            return await dbContext.SaveChangesAsync() > 0;
+            var savedSuccessfully = await dbContext.SaveChangesAsync() > 0;
+            if (savedSuccessfully)
+            {
+                return device;
+            }
+            return null;
         }
 
         public async Task<bool> UpdateDevice(Device device)

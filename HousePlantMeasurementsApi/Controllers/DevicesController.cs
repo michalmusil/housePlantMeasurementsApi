@@ -130,15 +130,21 @@ namespace HousePlantMeasurementsApi.Controllers
             {
                 newDevice = mapper.Map<Device>(devicePost);
                 newDevice.AuthHash = newDeviceAuthHash;
-                var saved = devicesRepository.AddDevice(newDevice);
+                var savedDevice = await devicesRepository.AddDevice(newDevice);
+
+                if(savedDevice == null)
+                {
+                    logger.LogInformation($"Saving a new device has failed");
+                    return BadRequest();
+                }
+
+                return Ok(mapper.Map<GetDeviceDto>(savedDevice));
             }
             catch (Exception ex)
             {
                 logger.LogInformation($"Creating a new device has failed: {ex.ToString()}");
                 return BadRequest();
             }
-
-            return Ok(mapper.Map<GetDeviceDto>(newDevice));
         }
 
         [HttpPost("register")]
