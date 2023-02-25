@@ -184,6 +184,7 @@ namespace HousePlantMeasurementsApi.Controllers
         {
             var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
             var plantToDelete = await plantsRepository.GetById(id);
+            var plantImageName = plantToDelete.TitleImagePath;
 
             if (plantToDelete == null)
             {
@@ -198,6 +199,11 @@ namespace HousePlantMeasurementsApi.Controllers
             }
 
             var deleted = await plantsRepository.DeletePlant(plantToDelete);
+
+            if(deleted && plantImageName != null)
+            {
+                var imageDeleted = await imageService.RemoveImageFromFileSystem(plantImageName);
+            }
 
             return Ok();
         }
