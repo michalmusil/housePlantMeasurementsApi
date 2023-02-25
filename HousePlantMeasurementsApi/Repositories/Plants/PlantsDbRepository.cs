@@ -62,6 +62,13 @@ namespace HousePlantMeasurementsApi.Repositories.Plants
 
         public async Task<bool> DeletePlant(Plant plant)
         {
+            var assignedDevice = await dbContext.Devices
+                .Where(d => d.PlantId == plant.Id)
+                .FirstOrDefaultAsync();
+            if(assignedDevice != null)
+            {
+                assignedDevice.PlantId = null;
+            }
             dbContext.Remove(plant);
             return await dbContext.SaveChangesAsync() > 0;
         }
