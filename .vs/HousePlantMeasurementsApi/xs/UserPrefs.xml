@@ -1,38 +1,41 @@
 ﻿<Properties StartupConfiguration="{C5E3879F-A91D-415A-AFD4-6ADC3D077C28}|Default">
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/DTOs/Plant/PutPlantDto.cs">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/Data/Entities/Device.cs">
     <Files>
-      <File FileName="HousePlantMeasurementsApi/Controllers/PlantsController.cs" Line="279" Column="1" />
-      <File FileName="HousePlantMeasurementsApi/DTOs/Plant/PutPlantDto.cs" Line="1" Column="1" />
+      <File FileName="HousePlantMeasurementsApi/Repositories/Plants/IPlantsRepository.cs" />
+      <File FileName="HousePlantMeasurementsApi/Repositories/Plants/PlantsDbRepository.cs" />
+      <File FileName="HousePlantMeasurementsApi/Data/PlantMeasurementsDbContext.cs" />
+      <File FileName="HousePlantMeasurementsApi/Controllers/PlantsController.cs" Line="205" Column="36" />
+      <File FileName="HousePlantMeasurementsApi/Services/ImageService/IImageService.cs" />
+      <File FileName="HousePlantMeasurementsApi/Services/ImageService/ImageService.cs" />
+      <File FileName="HousePlantMeasurementsApi/Data/Entities/Device.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="HousePlantMeasurementsApi" expanded="True">
             <Node name="HousePlantMeasurementsApi" expanded="True">
-              <Node name="Automapper" expanded="True" />
-              <Node name="Controllers" expanded="True" />
-              <Node name="DTOs" expanded="True">
-                <Node name="Plant" expanded="True">
-                  <Node name="PutPlantDto.cs" selected="True" />
+              <Node name="Data" expanded="True">
+                <Node name="Entities" expanded="True">
+                  <Node name="Device.cs" selected="True" />
                 </Node>
               </Node>
               <Node name="Repositories" expanded="True">
-                <Node name="Users" expanded="True" />
+                <Node name="Plants" expanded="True" />
+              </Node>
+              <Node name="Services" expanded="True">
+                <Node name="ImageService" expanded="True" />
               </Node>
             </Node>
           </Node>
         </State>
       </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
-      </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.ItemProperties.HousePlantMeasurementsApi PreferredExecutionTarget="/Applications/Firefox.app" />
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.HousePlantMeasurementsApi PreferredExecutionTarget="/Applications/Firefox.app" />
 </Properties>

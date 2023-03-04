@@ -147,7 +147,7 @@ namespace HousePlantMeasurementsApi.Controllers
             }
         }
 
-        [HttpPost("register")]
+        [HttpPut("register")]
         public async Task<ActionResult<GetDeviceDto>> RegisterDevice(PostRegisterDeviceDto registerObject)
         {
             //Returning generic BadRequest for all failures to minimize feedback on attempts to brute force register devices
@@ -192,7 +192,7 @@ namespace HousePlantMeasurementsApi.Controllers
         }
 
 
-        [HttpPost("activation")]
+        [HttpPut("activation")]
         public async Task<ActionResult<GetDeviceDto>> DeviceActivation(PostDeviceActivationDto activationObject)
         {
             var foundDevice = await devicesRepository.GetById(activationObject.DeviceId);
@@ -217,7 +217,7 @@ namespace HousePlantMeasurementsApi.Controllers
             return Ok(mapper.Map<GetDeviceDto>(foundDevice));
         }
 
-        [HttpPost("assignToPlant")]
+        [HttpPut("assignToPlant")]
         public async Task<ActionResult<GetDeviceDto>> AssignDeviceToPlant(PostAssignToPlantDto assignObject)
         {
             var foundDevice = await devicesRepository.GetById(assignObject.DeviceId);
@@ -255,7 +255,27 @@ namespace HousePlantMeasurementsApi.Controllers
             return Ok(mapper.Map<GetDeviceDto>(foundDevice));
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteDevice(int id)
+        {
+            var deviceToDelete = await devicesRepository.GetById(id);
+            if (deviceToDelete == null)
+            {
+                return NotFound();
+            }
 
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
+            var asksForHimself = await authService.SignedUserHasId(HttpContext.User, deviceToDelete.UserId ?? -1);
+
+            if (!isAdmin && !asksForHimself)
+            {
+                return Forbid();
+            }
+
+            var deleted = await devicesRepository.DeleteDevice(deviceToDelete);
+
+            return Ok();
+        }
 
     }
 

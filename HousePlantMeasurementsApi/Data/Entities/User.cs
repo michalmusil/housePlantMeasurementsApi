@@ -19,8 +19,8 @@ namespace HousePlantMeasurementsApi.Data.Entities
         [Required]
         public UserRole Role { get; set; }
 
-        List<Plant> Plants { get; set; }
-        List<Device> Devices { get; set; }
+        public List<Plant> Plants { get; set; }
+        public List<Device> Devices { get; set; }
 
     }
 }

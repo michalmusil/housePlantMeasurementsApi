@@ -40,6 +40,9 @@ namespace HousePlantMeasurementsApi.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("PlantId")
                         .HasColumnType("int");
 
@@ -59,7 +62,7 @@ namespace HousePlantMeasurementsApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Devices");
+                    b.ToTable("Devices", (string)null);
                 });
 
             modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.Measurement", b =>
@@ -91,7 +94,7 @@ namespace HousePlantMeasurementsApi.Migrations
 
                     b.HasIndex("PlantId");
 
-                    b.ToTable("Measurements");
+                    b.ToTable("Measurements", (string)null);
                 });
 
             modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.MeasurementValue", b =>
@@ -121,7 +124,7 @@ namespace HousePlantMeasurementsApi.Migrations
 
                     b.HasIndex("MeasurementId");
 
-                    b.ToTable("MeasurementValues");
+                    b.ToTable("MeasurementValues", (string)null);
                 });
 
             modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.MeasurementValueLimit", b =>
@@ -154,7 +157,7 @@ namespace HousePlantMeasurementsApi.Migrations
 
                     b.HasIndex("PlantId");
 
-                    b.ToTable("MeasurementValueLimits");
+                    b.ToTable("MeasurementValueLimits", (string)null);
                 });
 
             modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.Plant", b =>
@@ -195,7 +198,7 @@ namespace HousePlantMeasurementsApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Plants");
+                    b.ToTable("Plants", (string)null);
                 });
 
             modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.User", b =>
@@ -226,7 +229,7 @@ namespace HousePlantMeasurementsApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.Device", b =>

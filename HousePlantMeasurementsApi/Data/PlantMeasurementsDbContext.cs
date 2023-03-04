@@ -40,6 +40,12 @@ namespace HousePlantMeasurementsApi.Data
                 .WithMany(p => p.Measurements)
                 .HasForeignKey(m => m.PlantId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Plant>()
+                .HasOne(p => p.User)
+                .WithMany(u => u.Plants)
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

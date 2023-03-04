@@ -166,7 +166,7 @@ namespace HousePlantMeasurementsApi.Controllers
                 return Forbid();
             }
 
-            User? userToDelete = await usersRepository.GetById(id);
+            var userToDelete = await usersRepository.GetById(id);
             if (userToDelete == null)
             {
                 return NotFound();

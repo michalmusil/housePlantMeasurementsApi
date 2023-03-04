@@ -16,7 +16,9 @@ namespace HouseDeviceMeasurementsApi.Repositories.Devices
 
         public async Task<IEnumerable<Device>> GetAllDevices(bool? registered = null)
         {
-            var devices = dbContext.Devices.AsNoTracking();
+            var devices = dbContext.Devices
+                .Where(d => !d.IsDeleted)
+                .AsNoTracking();
 
             if (registered == true)
             {
@@ -32,17 +34,23 @@ namespace HouseDeviceMeasurementsApi.Repositories.Devices
 
         public async Task<Device?> GetById(int id)
         {
-            return await dbContext.Devices.Where(d => d.Id == id).FirstOrDefaultAsync();
+            return await dbContext.Devices
+                .Where(d => !d.IsDeleted && d.Id == id)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<Device?> GetByUUID(string uuid)
         {
-            return await dbContext.Devices.Where(d => d.UUID == uuid).FirstOrDefaultAsync();
+            return await dbContext.Devices
+                .Where(d => !d.IsDeleted && d.UUID == uuid)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Device>> GetByUserId(int userId)
         {
-            var devices = await dbContext.Devices.Where(d => d.UserId == userId).ToListAsync();
+            var devices = await dbContext.Devices
+                .Where(d => !d.IsDeleted && d.UserId == userId)
+                .ToListAsync();
             return devices;
         }
 
@@ -66,7 +74,8 @@ namespace HouseDeviceMeasurementsApi.Repositories.Devices
 
         public async Task<bool> DeleteDevice(Device device)
         {
-            dbContext.Remove(device);
+            device.IsDeleted = true;
+            dbContext.Update(device);
             return await dbContext.SaveChangesAsync() > 0;
         }
     }

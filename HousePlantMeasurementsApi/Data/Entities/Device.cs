@@ -18,12 +18,21 @@ namespace HousePlantMeasurementsApi.Data.Entities
 
         [Required]
         public bool IsActive { get; set; }
+        [Required]
+        public bool IsDeleted { get; set; }
 
         public int? UserId { get; set; }
         public User? User { get; set; }
 
         public int? PlantId { get; set; }
         public Plant? Plant { get; set; }
+
+
+
+        public Device()
+        {
+            this.IsDeleted = false;
+        }
     }
 }
 
