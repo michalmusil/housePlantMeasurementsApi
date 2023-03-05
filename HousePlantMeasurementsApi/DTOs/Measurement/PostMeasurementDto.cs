@@ -8,7 +8,7 @@ namespace HousePlantMeasurementsApi.DTOs.Measurement
     public class PostMeasurementDto
     {
         [Required]
-        public string DeviceUUID { get; set; }
+        public string DeviceCommunicationIdentifier { get; set; }
 
         [Required]
         public string DeviceMacAddress { get; set; }

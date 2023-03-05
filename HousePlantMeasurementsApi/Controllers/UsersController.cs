@@ -155,6 +155,24 @@ namespace HousePlantMeasurementsApi.Controllers
 
         }
 
+        [HttpPut("notificationToken")]
+        public async Task<ActionResult> UpdateNotificationToken(PutNotificationTokenDto tokenPut)
+        {
+            var signedUserId = await authService.GetSignedUserId(HttpContext.User);
+            var signedUser = await usersRepository.GetById(signedUserId ?? -1);
+
+            if (signedUser == null)
+            {
+                return NotFound();
+            }
+
+            signedUser.NotificationToken = tokenPut.NotificationToken;
+
+            var updated = await usersRepository.UpdateUser(signedUser);
+
+            return Ok();
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(int id)
         {

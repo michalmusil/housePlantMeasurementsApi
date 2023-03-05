@@ -10,11 +10,11 @@ namespace HousePlantMeasurementsApi.Data.Entities
     {
         [Required]
         [MinLength(30)]
-        public string UUID { get; set; }
+        public string CommunicationIdentifier { get; set; }
 
         // The hash of devices MAC address - ensures dependency on physical device
         [Required]
-        public string AuthHash { get; set; }
+        public string MacHash { get; set; }
 
         [Required]
         public bool IsActive { get; set; }

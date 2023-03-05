@@ -110,18 +110,18 @@ namespace HousePlantMeasurementsApi.Controllers
                 return StatusCode(403, "This endpoint is restricted for admin users only");
             }
 
-            var deviceWithNewUUID = await devicesRepository.GetByUUID(devicePost.UUID);
+            var deviceWithNewCommunicationIdentifier = await devicesRepository.GetByCommunicationIdentifier(devicePost.CommunicationIdentifier);
 
-            if (deviceWithNewUUID != null)
+            if (deviceWithNewCommunicationIdentifier != null)
             {
-                return Conflict("Device with this UUID already exists");
+                return Conflict("Device with this CommunicationIdentifier already exists");
             }
 
             var newDeviceAuthHash = authService.GetDeviceAuthHash(devicePost.MacAddress);
 
             if (newDeviceAuthHash == null)
             {
-                return BadRequest("Device UUID or MAC address are not compatible");
+                return BadRequest("Device CommunicationIdentifier or MAC address are not compatible");
             }
 
             Device newDevice = null;
@@ -129,7 +129,7 @@ namespace HousePlantMeasurementsApi.Controllers
             try
             {
                 newDevice = mapper.Map<Device>(devicePost);
-                newDevice.AuthHash = newDeviceAuthHash;
+                newDevice.MacHash = newDeviceAuthHash;
                 var savedDevice = await devicesRepository.AddDevice(newDevice);
 
                 if(savedDevice == null)
@@ -151,16 +151,16 @@ namespace HousePlantMeasurementsApi.Controllers
         public async Task<ActionResult<GetDeviceDto>> RegisterDevice(PostRegisterDeviceDto registerObject)
         {
             //Returning generic BadRequest for all failures to minimize feedback on attempts to brute force register devices
-            var foundDevice = await devicesRepository.GetByUUID(registerObject.UUID);
+            var foundDevice = await devicesRepository.GetByCommunicationIdentifier(registerObject.CommunicationIdentifier);
 
             if (foundDevice == null)
             {
-                //Device with this UUID does not exist
+                //Device with this CommunicationIdentifier does not exist
                 return BadRequest();
             }
 
             var deviceAuth = authService.GetDeviceAuthHashBase(registerObject.MacAddress);
-            var isAuthenticated = BCrypt.Net.BCrypt.Verify(deviceAuth, foundDevice.AuthHash);
+            var isAuthenticated = BCrypt.Net.BCrypt.Verify(deviceAuth, foundDevice.MacHash);
 
             if (!isAuthenticated)
             {

@@ -39,10 +39,10 @@ namespace HouseDeviceMeasurementsApi.Repositories.Devices
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<Device?> GetByUUID(string uuid)
+        public async Task<Device?> GetByCommunicationIdentifier(string communicationIdentifier)
         {
             return await dbContext.Devices
-                .Where(d => !d.IsDeleted && d.UUID == uuid)
+                .Where(d => !d.IsDeleted && d.CommunicationIdentifier == communicationIdentifier)
                 .FirstOrDefaultAsync();
         }
 

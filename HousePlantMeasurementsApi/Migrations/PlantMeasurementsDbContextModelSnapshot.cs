@@ -30,7 +30,7 @@ namespace HousePlantMeasurementsApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AuthHash")
+                    b.Property<string>("CommunicationIdentifier")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -43,12 +43,12 @@ namespace HousePlantMeasurementsApi.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("PlantId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UUID")
+                    b.Property<string>("MacHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PlantId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime2");
@@ -62,7 +62,7 @@ namespace HousePlantMeasurementsApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Devices", (string)null);
+                    b.ToTable("Devices");
                 });
 
             modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.Measurement", b =>
@@ -94,7 +94,7 @@ namespace HousePlantMeasurementsApi.Migrations
 
                     b.HasIndex("PlantId");
 
-                    b.ToTable("Measurements", (string)null);
+                    b.ToTable("Measurements");
                 });
 
             modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.MeasurementValue", b =>
@@ -124,7 +124,7 @@ namespace HousePlantMeasurementsApi.Migrations
 
                     b.HasIndex("MeasurementId");
 
-                    b.ToTable("MeasurementValues", (string)null);
+                    b.ToTable("MeasurementValues");
                 });
 
             modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.MeasurementValueLimit", b =>
@@ -157,7 +157,7 @@ namespace HousePlantMeasurementsApi.Migrations
 
                     b.HasIndex("PlantId");
 
-                    b.ToTable("MeasurementValueLimits", (string)null);
+                    b.ToTable("MeasurementValueLimits");
                 });
 
             modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.Plant", b =>
@@ -198,7 +198,7 @@ namespace HousePlantMeasurementsApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Plants", (string)null);
+                    b.ToTable("Plants");
                 });
 
             modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.User", b =>
@@ -217,6 +217,9 @@ namespace HousePlantMeasurementsApi.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<string>("NotificationToken")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -229,7 +232,7 @@ namespace HousePlantMeasurementsApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.Device", b =>
@@ -239,7 +242,7 @@ namespace HousePlantMeasurementsApi.Migrations
                         .HasForeignKey("PlantId");
 
                     b.HasOne("HousePlantMeasurementsApi.Data.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("Devices")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Plant");
@@ -291,7 +294,7 @@ namespace HousePlantMeasurementsApi.Migrations
             modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.Plant", b =>
                 {
                     b.HasOne("HousePlantMeasurementsApi.Data.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("Plants")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -309,6 +312,13 @@ namespace HousePlantMeasurementsApi.Migrations
                     b.Navigation("MeasurementValueLimits");
 
                     b.Navigation("Measurements");
+                });
+
+            modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.User", b =>
+                {
+                    b.Navigation("Devices");
+
+                    b.Navigation("Plants");
                 });
 #pragma warning restore 612, 618
         }

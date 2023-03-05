@@ -145,16 +145,16 @@ namespace HousePlantMeasurementsApi.Controllers
         public async Task<ActionResult<GetPlantDto>> PostNewMeasurement(PostMeasurementDto measurementPost)
         {
             //Response is always 200 OK - so that malicious user can't get feedback on brute force guessing
-            var foundDevice = await devicesRepository.GetByUUID(measurementPost.DeviceUUID);
+            var foundDevice = await devicesRepository.GetByCommunicationIdentifier(measurementPost.DeviceCommunicationIdentifier);
 
             if (foundDevice == null)
             {
-                //No device with this UUID was found
+                //No device with this CommunicationIdentifier was found
                 return Ok();
             }
 
             var deviceAuth = authService.GetDeviceAuthHashBase(measurementPost.DeviceMacAddress);
-            var isAuthenticated = BCrypt.Net.BCrypt.Verify(deviceAuth, foundDevice.AuthHash);
+            var isAuthenticated = BCrypt.Net.BCrypt.Verify(deviceAuth, foundDevice.MacHash);
 
             if (!isAuthenticated)
             {

@@ -7,8 +7,7 @@ namespace HousePlantMeasurementsApi.DTOs.Device
     {
         [Required]
         [MinLength(30)]
-        public string UUID { get; set; }
-
+        public string CommunicationIdentifier { get; set; }
         [Required]
         [MinLength(17)]
         [MaxLength(17)]
