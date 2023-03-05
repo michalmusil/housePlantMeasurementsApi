@@ -57,6 +57,7 @@
     <None Remove="DTOs\MeasurementValueLimit\" />
     <None Remove="FCM\" />
     <None Remove="FCM\Credentials\" />
+    <None Remove="Services\FCMService\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="db_data\" />
@@ -83,5 +84,6 @@
     <Folder Include="DTOs\MeasurementValueLimit\" />
     <Folder Include="FCM\" />
     <Folder Include="FCM\Credentials\" />
+    <Folder Include="Services\FCMService\" />
   </ItemGroup>
 </Project>

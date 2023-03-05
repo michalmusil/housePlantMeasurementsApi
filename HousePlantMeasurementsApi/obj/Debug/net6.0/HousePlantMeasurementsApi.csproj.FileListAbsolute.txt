@@ -73,3 +73,4 @@
 /Users/michalmusil/MENDELU/Bakalarka/SledovaniCharakteristikProstrediPokojovychRostlin/Code/housePlantMeasurementsApi/HousePlantMeasurementsApi/bin/Debug/net6.0/Google.Apis.Core.dll
 /Users/michalmusil/MENDELU/Bakalarka/SledovaniCharakteristikProstrediPokojovychRostlin/Code/housePlantMeasurementsApi/HousePlantMeasurementsApi/bin/Debug/net6.0/Microsoft.Bcl.AsyncInterfaces.dll
 /Users/michalmusil/MENDELU/Bakalarka/SledovaniCharakteristikProstrediPokojovychRostlin/Code/housePlantMeasurementsApi/HousePlantMeasurementsApi/bin/Debug/net6.0/Newtonsoft.Json.dll
+/Users/michalmusil/MENDELU/Bakalarka/SledovaniCharakteristikProstrediPokojovychRostlin/Code/housePlantMeasurementsApi/HousePlantMeasurementsApi/bin/Debug/net6.0/FCM/Credentials/plant-monitor-mobile-app-firebase-adminsdk-xdfd6-bb86cfc257.json
