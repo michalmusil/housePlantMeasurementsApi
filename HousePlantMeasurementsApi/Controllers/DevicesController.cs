@@ -117,7 +117,7 @@ namespace HousePlantMeasurementsApi.Controllers
                 return Conflict("Device with this CommunicationIdentifier already exists");
             }
 
-            var newDeviceAuthHash = authService.GetDeviceAuthHash(devicePost.MacAddress);
+            var newDeviceAuthHash = authService.GetDeviceMacHash(devicePost.MacAddress);
 
             if (newDeviceAuthHash == null)
             {
@@ -159,8 +159,7 @@ namespace HousePlantMeasurementsApi.Controllers
                 return BadRequest();
             }
 
-            var deviceAuth = authService.GetDeviceAuthHashBase(registerObject.MacAddress);
-            var isAuthenticated = BCrypt.Net.BCrypt.Verify(deviceAuth, foundDevice.MacHash);
+            var isAuthenticated = BCrypt.Net.BCrypt.Verify(registerObject.MacAddress, foundDevice.MacHash);
 
             if (!isAuthenticated)
             {

@@ -9,7 +9,9 @@ namespace HousePlantMeasurementsApi.Repositories.Users
 
         public Task<User?> GetById(int id);
 
-        public Task<User> GetByEmail(string email);
+        public Task<User?> GetByEmail(string email);
+
+        public Task<User?> GetByNotificationToken(string notificationToken);
 
         public Task<User?> AddUser(User user);
 

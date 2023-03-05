@@ -22,6 +22,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.10" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="FirebaseAdmin" Version="2.3.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,6 +55,8 @@
     <None Remove="Resources\PlantImages\" />
     <None Remove="Services\ImageService\" />
     <None Remove="DTOs\MeasurementValueLimit\" />
+    <None Remove="FCM\" />
+    <None Remove="FCM\Credentials\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="db_data\" />
@@ -78,5 +81,7 @@
     <Folder Include="Resources\PlantImages\" />
     <Folder Include="Services\ImageService\" />
     <Folder Include="DTOs\MeasurementValueLimit\" />
+    <Folder Include="FCM\" />
+    <Folder Include="FCM\Credentials\" />
   </ItemGroup>
 </Project>

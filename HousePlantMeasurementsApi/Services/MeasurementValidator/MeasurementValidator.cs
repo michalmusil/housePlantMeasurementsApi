@@ -7,30 +7,23 @@ namespace HousePlantMeasurementsApi.Services.ValidationHelperService
     public class MeasurementValidator : IMeasurementValidator
     {
 
-        public bool IsMeasurementValid(Measurement measurement, Plant plant)
+        public bool IsMeasurementValid(Measurement measurement, Plant plant, Device device)
         {
-            if(measurement == null || plant == null)
+            if(measurement == null || plant == null || device == null)
             {
                 return false;
             }
 
-            foreach (var limit in plant.MeasurementValueLimits)
+            // Device must be activated, must be assigned to user and must be assigned to mentioned plant
+            if (!device.IsActive || device.UserId == null || device.PlantId != plant.Id)
             {
-                var type = limit.Type;
-                if (!IsMeasurementTypeValid(type))
-                {
-                    return false;
-                }
+                return false;
+            }
 
-                var valueOfType = measurement.getValueByType(type);
-                if(valueOfType == null)
-                {
-                    break;
-                }
-                if(valueOfType > limit.UpperLimit || valueOfType < limit.LowerLimit)
-                {
-                    return false;
-                }
+            // Measurements plantId and deviceId must be set to mentioned plant and device
+            if(measurement.PlantId != plant.Id || measurement.DeviceId != device.Id)
+            {
+                return false;
             }
 
             return true;
@@ -54,6 +47,29 @@ namespace HousePlantMeasurementsApi.Services.ValidationHelperService
                     return false;
                 }
             }
+            return true;
+        }
+
+        public bool IsMeasurementWithinLimits(Measurement measurement, List<MeasurementValueLimit> limits)
+        {
+            foreach (var limit in limits)
+            {
+                var type = limit.Type;
+                if (!IsMeasurementTypeValid(type))
+                {
+                    break;
+                }
+                var valueOfType = measurement.getValueByType(type);
+                if (valueOfType == null)
+                {
+                    break;
+                }
+                if (valueOfType > limit.UpperLimit || valueOfType < limit.LowerLimit)
+                {
+                    return false;
+                }
+            }
+
             return true;
         }
     }

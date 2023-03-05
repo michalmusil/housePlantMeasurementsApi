@@ -166,6 +166,15 @@ namespace HousePlantMeasurementsApi.Controllers
                 return NotFound();
             }
 
+            var existingUserWithToken = await usersRepository.GetByNotificationToken(tokenPut.NotificationToken);
+
+            // If another user already has this token, take it away from him
+            if(existingUserWithToken != null && existingUserWithToken.Id != signedUser.Id)
+            {
+                existingUserWithToken.NotificationToken = null;
+                await usersRepository.UpdateUser(existingUserWithToken);
+            }
+
             signedUser.NotificationToken = tokenPut.NotificationToken;
 
             var updated = await usersRepository.UpdateUser(signedUser);

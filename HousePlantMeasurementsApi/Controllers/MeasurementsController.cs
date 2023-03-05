@@ -153,28 +153,15 @@ namespace HousePlantMeasurementsApi.Controllers
                 return Ok();
             }
 
-            var deviceAuth = authService.GetDeviceAuthHashBase(measurementPost.DeviceMacAddress);
-            var isAuthenticated = BCrypt.Net.BCrypt.Verify(deviceAuth, foundDevice.MacHash);
+            var isAuthenticated = BCrypt.Net.BCrypt.Verify(measurementPost.DeviceMacAddress, foundDevice.MacHash);
 
             if (!isAuthenticated)
             {
                 //MAC address of the request is not valid - device not authenticated
                 return Ok();
-            }
-
-            if (!foundDevice.IsActive)
-            {
-                //Measurement accepted but not saved - sender measuring device is deactivated
-                return Ok();
-            }
+            }  
 
             var plant = await plantsRepository.GetById(foundDevice.PlantId ?? -1);
-
-            if (foundDevice.UserId == null || plant == null)
-            {
-                //Device is not assigned to an existing plant
-                return Ok();
-            }
 
             Measurement? newMeasurement = null;
             try
@@ -190,7 +177,7 @@ namespace HousePlantMeasurementsApi.Controllers
                 return Ok();
             }
 
-            if (!measurementValidator.IsMeasurementValid(newMeasurement, plant))
+            if (!measurementValidator.IsMeasurementValid(measurement: newMeasurement, plant: plant, device: foundDevice))
             {
                 //Measurement accepted but not saved - measurement is invalid
                 return Ok();
@@ -202,6 +189,11 @@ namespace HousePlantMeasurementsApi.Controllers
             {
                 logger.LogInformation($"Saving a new measurement failed");
                 return BadRequest();
+            }
+
+            if(!measurementValidator.IsMeasurementWithinLimits(savedMeasurement, plant.MeasurementValueLimits))
+            {
+                // SEND NOTIFICATION
             }
 
             return Ok(mapper.Map<GetMeasurementDto>(savedMeasurement));

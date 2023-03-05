@@ -106,15 +106,9 @@ namespace HousePlantMeasurementsApi.Services.AuthService
             return await GetSignedUserId(user) == id;
         }
 
-        public string GetDeviceAuthHashBase(string macAddress)
+        public string? GetDeviceMacHash(string macAddress)
         {
-            return macAddress;
-        }
-
-        public string? GetDeviceAuthHash(string macAddress)
-        {
-            var baseString = GetDeviceAuthHashBase(macAddress);
-            var hashed = BCrypt.Net.BCrypt.HashPassword(baseString);
+            var hashed = BCrypt.Net.BCrypt.HashPassword(macAddress);
             return hashed;
         }
 
