@@ -161,14 +161,14 @@ namespace HousePlantMeasurementsApi.Controllers
             plantToUpdate.Description = plantPut.Description ?? plantToUpdate.Description;
 
 
+            // Updating measurement value limits of this plant
             var mappedPut = mapper.Map<Plant>(plantPut);
             if( mappedPut != null &&
-                mappedPut.MeasurementValueLimits != null &&
-                mappedPut.MeasurementValueLimits.Count > 0)
+                mappedPut.MeasurementValueLimits != null)
             {
                 if (!measurementValidator.AreMeasurementLimitsValid(mappedPut.MeasurementValueLimits))
                 {
-                    return BadRequest();
+                    return BadRequest("Measurement limits are not valid");
                 }
                 var limitsRemoved =  await plantsRepository.RemoveLimitsOfPlant(plantToUpdate);
                 plantToUpdate.MeasurementValueLimits = mappedPut.MeasurementValueLimits;
