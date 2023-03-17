@@ -254,24 +254,28 @@ namespace HousePlantMeasurementsApi.Controllers
             return Ok(mapper.Map<GetDeviceDto>(foundDevice));
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteDevice(int id)
+        [HttpPut("unregister/{id}")]
+        public async Task<ActionResult> UnregisterDevice(int id)
         {
-            var deviceToDelete = await devicesRepository.GetById(id);
-            if (deviceToDelete == null)
+            var deviceToUnregister = await devicesRepository.GetById(id);
+            if (deviceToUnregister == null)
             {
                 return NotFound();
             }
 
             var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
-            var asksForHimself = await authService.SignedUserHasId(HttpContext.User, deviceToDelete.UserId ?? -1);
+            var asksForHimself = await authService.SignedUserHasId(HttpContext.User, deviceToUnregister.UserId ?? -1);
 
             if (!isAdmin && !asksForHimself)
             {
                 return Forbid();
             }
 
-            var deleted = await devicesRepository.DeleteDevice(deviceToDelete);
+            deviceToUnregister.IsActive = false;
+            deviceToUnregister.PlantId = null;
+            deviceToUnregister.UserId = null;
+
+            var updated = await devicesRepository.UpdateDevice(deviceToUnregister);
 
             return Ok();
         }

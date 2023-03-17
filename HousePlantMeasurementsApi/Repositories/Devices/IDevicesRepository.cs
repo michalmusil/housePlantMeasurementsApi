@@ -16,8 +16,6 @@ namespace HouseDeviceMeasurementsApi.Repositories.Devices
         public Task<Device?> AddDevice(Device device);
 
         public Task<bool> UpdateDevice(Device device);
-
-        public Task<bool> DeleteDevice(Device device);
     }
 }
 

@@ -6,7 +6,8 @@ namespace HousePlantMeasurementsApi.DTOs.Device
     public class PostRegisterDeviceDto
     {
         [Required]
-        [MinLength(30)]
+        [MinLength(15)]
+        [MaxLength(15)]
         public string CommunicationIdentifier { get; set; }
         [Required]
         [MinLength(17)]
