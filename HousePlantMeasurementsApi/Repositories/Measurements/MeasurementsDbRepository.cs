@@ -2,6 +2,7 @@
 using HousePlantMeasurementsApi.Data;
 using HousePlantMeasurementsApi.Data.Entities;
 using HousePlantMeasurementsApi.Data.Enums;
+using HousePlantMeasurementsApi.DTOs.MeasurementValue;
 using Microsoft.EntityFrameworkCore;
 
 namespace HousePlantMeasurementsApi.Repositories.Measurements
@@ -75,6 +76,39 @@ namespace HousePlantMeasurementsApi.Repositories.Measurements
             return measurementWithValues;
         }
 
+        public async Task<IEnumerable<GetLatestMeasurementValueDto>> GetMostRecentValuesOfPlant(int plantId)
+        {
+            var values = new List<GetLatestMeasurementValueDto>();
+
+            var measurementTypes = Enum.GetValues(typeof(MeasurementType));
+            foreach(var measurementType in measurementTypes)
+            {
+                var castedType = (MeasurementType)measurementType;
+                var result = await dbContext.Measurements.Join(
+                    dbContext.MeasurementValues,
+                    m => m.Id,
+                    v => v.MeasurementId,
+                    (m, v) => new { m = m, v = v })
+                    .Where(x => x.m.PlantId == plantId && x.v.Type == castedType)
+                    .OrderByDescending(x => x.m.Taken)
+                    .FirstOrDefaultAsync();
+
+                if(result != null)
+                {
+                    var latestValue = new GetLatestMeasurementValueDto()
+                    {
+                        Type = result.v.Type,
+                        Value = result.v.Value,
+                        MeasurementId = result.m.Id,
+                        Taken = result.m.Taken
+                    };
+                    values.Add(latestValue);
+                }
+            }
+
+            return values;
+        }
+
         public async Task<Measurement?> GetById(int id)
         {
             return await dbContext.Measurements.Where(m => m.Id == id)
@@ -98,8 +132,7 @@ namespace HousePlantMeasurementsApi.Repositories.Measurements
         {
             dbContext.Remove(measurement);
             return await dbContext.SaveChangesAsync() > 0;
-        }
-
+        }     
     }
 }
 

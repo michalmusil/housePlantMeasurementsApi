@@ -1,6 +1,7 @@
 ﻿using System;
 using HousePlantMeasurementsApi.Data.Entities;
 using HousePlantMeasurementsApi.Data.Enums;
+using HousePlantMeasurementsApi.DTOs.MeasurementValue;
 
 namespace HousePlantMeasurementsApi.Repositories.Measurements
 {
@@ -14,6 +15,8 @@ namespace HousePlantMeasurementsApi.Repositories.Measurements
         public Task<Measurement?> GetById(int id);
 
         public Task<Measurement?> GetMostRecentByMeasurementType(int plantId, MeasurementType measurementType);
+
+        public Task<IEnumerable<GetLatestMeasurementValueDto>> GetMostRecentValuesOfPlant(int plantId);
 
         public Task<Measurement?> AddMeasurement(Measurement measurement);
 

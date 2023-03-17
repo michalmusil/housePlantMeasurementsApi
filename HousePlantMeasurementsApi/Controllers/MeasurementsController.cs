@@ -5,6 +5,7 @@ using HouseDeviceMeasurementsApi.Repositories.Devices;
 using HousePlantMeasurementsApi.Data.Entities;
 using HousePlantMeasurementsApi.Data.Enums;
 using HousePlantMeasurementsApi.DTOs.Measurement;
+using HousePlantMeasurementsApi.DTOs.MeasurementValue;
 using HousePlantMeasurementsApi.DTOs.Plant;
 using HousePlantMeasurementsApi.Repositories.Measurements;
 using HousePlantMeasurementsApi.Repositories.Plants;
@@ -80,7 +81,7 @@ namespace HousePlantMeasurementsApi.Controllers
             return Ok(mapper.Map<IEnumerable<GetMeasurementDto>>(measurements));
         }
 
-        [HttpGet("plant/latest/{plantId}")]
+        [HttpGet("plant/latestMeasurement/{plantId}")]
         public async Task<ActionResult<GetMeasurementDto>> GetLatestMeasurementOfPlant(int plantId, [FromQuery] MeasurementType measurementType)
         {
             var plant = await plantsRepository.GetById(plantId);
@@ -112,6 +113,29 @@ namespace HousePlantMeasurementsApi.Controllers
             }
 
             return Ok(mapper.Map<GetMeasurementDto>(measurement));
+        }
+
+        [HttpGet("plant/latestValues/{plantId}")]
+        public async Task<ActionResult<IEnumerable<GetLatestMeasurementValueDto>>> GetLatestMeasurementValuesOfPlant(int plantId)
+        {
+            var plant = await plantsRepository.GetById(plantId);
+            
+            if (plant == null)
+            {
+                return NotFound();
+            }
+
+            var isAdmin = await authService.SignedUserHasRole(HttpContext.User, UserRole.ADMIN);
+            var asksForHimself = await authService.SignedUserHasId(HttpContext.User, plant.UserId);
+
+            if (!isAdmin && !asksForHimself)
+            {
+                return StatusCode(403, "Only owner of this plant or admin can view its measurements");
+            }
+
+            var mostRecentValues = await measurementsRepository.GetMostRecentValuesOfPlant(plantId);
+
+            return Ok(mostRecentValues);
         }
 
         [HttpGet("device/{deviceId}")]
