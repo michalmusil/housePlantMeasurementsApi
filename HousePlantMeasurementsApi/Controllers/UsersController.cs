@@ -166,6 +166,14 @@ namespace HousePlantMeasurementsApi.Controllers
                 return NotFound();
             }
 
+            // If user sets his token to null, no more validation is needed
+            if (tokenPut.NotificationToken == null)
+            {
+                signedUser.NotificationToken = null;
+                await usersRepository.UpdateUser(signedUser);
+                return Ok();
+            }
+
             var existingUserWithToken = await usersRepository.GetByNotificationToken(tokenPut.NotificationToken);
 
             // If another user already has this token, take it away from him

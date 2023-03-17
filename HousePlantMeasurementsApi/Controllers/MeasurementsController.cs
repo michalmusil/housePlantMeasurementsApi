@@ -30,7 +30,7 @@ namespace HousePlantMeasurementsApi.Controllers
         private readonly IUsersRepository usersRepository;
         private readonly IAuthService authService;
         private readonly IMeasurementValidator measurementValidator;
-        private readonly IFCMService fCMService;
+        private readonly IFCMService fcmService;
 
         public MeasurementsController(
             ILogger<PlantsController> logger,
@@ -51,7 +51,7 @@ namespace HousePlantMeasurementsApi.Controllers
             this.usersRepository = usersRepository;
             this.authService = authService;
             this.measurementValidator = measurementValidator;
-            this.fCMService = fCMService;
+            this.fcmService = fCMService;
         }
 
         [HttpGet("plant/{plantId}")]
@@ -209,7 +209,7 @@ namespace HousePlantMeasurementsApi.Controllers
                 var title = "Plant is not feeling well";
                 var message = plant.Name + " has surpassed set measurement limits.";
 
-                var sucessfulNotification = await fCMService.SendNotification(
+                var sucessfulNotification = await fcmService.SendNotification(
                     notificationToken: notificationToken,
                     title: title,
                     message: message,

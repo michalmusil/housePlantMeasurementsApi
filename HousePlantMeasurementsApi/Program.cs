@@ -90,7 +90,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
 // Dependency injection
-builder.Services.AddScoped<IFCMService, FCMService>();
+builder.Services.AddSingleton<IFCMService, FCMService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IMeasurementValidator, MeasurementValidator>();
