@@ -57,12 +57,12 @@ namespace HousePlantMeasurementsApi.Services.ValidationHelperService
                 var type = limit.Type;
                 if (!IsMeasurementTypeValid(type))
                 {
-                    break;
+                    continue;
                 }
                 var valueOfType = measurement.getValueByType(type);
                 if (valueOfType == null)
                 {
-                    break;
+                    continue;
                 }
                 if (valueOfType > limit.UpperLimit || valueOfType < limit.LowerLimit)
                 {

@@ -1,15 +1,16 @@
 ﻿<Properties StartupConfiguration="{C5E3879F-A91D-415A-AFD4-6ADC3D077C28}|Default">
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/Controllers/MeasurementsController.cs">
     <Files>
       <File FileName="HousePlantMeasurementsApi/Controllers/MeasurementsController.cs" Line="212" Column="1" />
-      <File FileName="HousePlantMeasurementsApi/Services/MeasurementValidator/IMeasurementValidator.cs" Line="9" Column="21" />
-      <File FileName="HousePlantMeasurementsApi/Services/MeasurementValidator/MeasurementValidator.cs" Line="1" Column="1" />
-      <File FileName="HousePlantMeasurementsApi/Controllers/DevicesController.cs" Line="1" Column="1" />
+      <File FileName="HousePlantMeasurementsApi/Services/MeasurementValidator/IMeasurementValidator.cs" />
+      <File FileName="HousePlantMeasurementsApi/Services/MeasurementValidator/MeasurementValidator.cs" />
+      <File FileName="HousePlantMeasurementsApi/Controllers/DevicesController.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -35,5 +36,4 @@
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.ItemProperties.HousePlantMeasurementsApi PreferredExecutionTarget="/Applications/Firefox.app" />
-  <MultiItemStartupConfigurations />
 </Properties>
