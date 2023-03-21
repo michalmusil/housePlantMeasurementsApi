@@ -13,6 +13,7 @@ namespace HousePlantMeasurementsApi.DTOs.Plant
         public string Name { get; set; }
         public string Species { get; set; }
         public string? Description { get; set; }
+        public DateTime Created { get; set; }
 
         public bool HasTitleImage { get; set; }
 

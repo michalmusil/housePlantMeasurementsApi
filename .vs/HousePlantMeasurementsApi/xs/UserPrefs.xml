@@ -1,16 +1,15 @@
 ﻿<Properties StartupConfiguration="{C5E3879F-A91D-415A-AFD4-6ADC3D077C28}|Default">
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/Controllers/MeasurementsController.cs">
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/Controllers/PlantsController.cs">
     <Files>
-      <File FileName="HousePlantMeasurementsApi/Controllers/MeasurementsController.cs" Line="212" Column="1" />
-      <File FileName="HousePlantMeasurementsApi/Services/MeasurementValidator/IMeasurementValidator.cs" />
-      <File FileName="HousePlantMeasurementsApi/Services/MeasurementValidator/MeasurementValidator.cs" />
-      <File FileName="HousePlantMeasurementsApi/Controllers/DevicesController.cs" />
+      <File FileName="HousePlantMeasurementsApi/Controllers/MeasurementsController.cs" />
+      <File FileName="HousePlantMeasurementsApi/Data/Entities/Plant.cs" />
+      <File FileName="HousePlantMeasurementsApi/Data/Entities/BaseEntity.cs" />
+      <File FileName="HousePlantMeasurementsApi/DTOs/Plant/GetPlantDto.cs" />
+      <File FileName="HousePlantMeasurementsApi/DTOs/Plant/PutPlantDto.cs" />
+      <File FileName="HousePlantMeasurementsApi/DTOs/Plant/PostPlantDto.cs" />
+      <File FileName="HousePlantMeasurementsApi/Controllers/PlantsController.cs" Line="146" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -18,16 +17,10 @@
           <Node name="HousePlantMeasurementsApi" expanded="True">
             <Node name="HousePlantMeasurementsApi" expanded="True">
               <Node name="Controllers" expanded="True">
-                <Node name="MeasurementsController.cs" selected="True" />
+                <Node name="PlantsController.cs" selected="True" />
               </Node>
-              <Node name="Repositories" expanded="True">
-                <Node name="Devices" expanded="True" />
-              </Node>
-              <Node name="Services" expanded="True">
-                <Node name="AuthService" expanded="True" />
-                <Node name="FCMService" expanded="True" />
-                <Node name="ImageService" expanded="True" />
-                <Node name="MeasurementValidator" expanded="True" />
+              <Node name="DTOs" expanded="True">
+                <Node name="Plant" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -35,5 +28,9 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.ItemProperties.HousePlantMeasurementsApi PreferredExecutionTarget="/Applications/Firefox.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
