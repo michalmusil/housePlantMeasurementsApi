@@ -1,2 +1,4 @@
+.DS_Store
+**/db_data
 HousePlantMeasurementsApi/Resources/PlantImages
 HousePlantMeasurementsApi/FCM/Credentials/*
