@@ -1,2 +1,6 @@
+.DS_Store
+appsettings.*
+**/db_data
+docker-compose.yml
 HousePlantMeasurementsApi/Resources/PlantImages
 HousePlantMeasurementsApi/FCM/Credentials/*

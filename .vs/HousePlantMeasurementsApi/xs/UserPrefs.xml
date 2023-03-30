@@ -1,7 +1,6 @@
 ﻿<Properties StartupConfiguration="{C5E3879F-A91D-415A-AFD4-6ADC3D077C28}|Default">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/Controllers/PlantsController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/Data/Entities/Device.cs">
     <Files>
       <File FileName="HousePlantMeasurementsApi/Controllers/MeasurementsController.cs" />
       <File FileName="HousePlantMeasurementsApi/Data/Entities/Plant.cs" />
@@ -9,28 +8,32 @@
       <File FileName="HousePlantMeasurementsApi/DTOs/Plant/GetPlantDto.cs" />
       <File FileName="HousePlantMeasurementsApi/DTOs/Plant/PutPlantDto.cs" />
       <File FileName="HousePlantMeasurementsApi/DTOs/Plant/PostPlantDto.cs" />
-      <File FileName="HousePlantMeasurementsApi/Controllers/PlantsController.cs" Line="146" Column="1" />
+      <File FileName="HousePlantMeasurementsApi/Controllers/PlantsController.cs" />
+      <File FileName="HousePlantMeasurementsApi/appsettings.json" />
+      <File FileName="HousePlantMeasurementsApi/appsettings.Development.json" />
+      <File FileName="HousePlantMeasurementsApi/docker-compose.yml" />
+      <File FileName="HousePlantMeasurementsApi/Migrations/20221015212841_InitialMigration.cs" />
+      <File FileName="HousePlantMeasurementsApi/Data/Entities/Device.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="HousePlantMeasurementsApi" expanded="True">
             <Node name="HousePlantMeasurementsApi" expanded="True">
-              <Node name="Controllers" expanded="True">
-                <Node name="PlantsController.cs" selected="True" />
-              </Node>
-              <Node name="DTOs" expanded="True">
-                <Node name="Plant" expanded="True" />
-              </Node>
+              <Node name="Controllers" expanded="True" />
+              <Node name="Data" expanded="True" />
+              <Node name="Repositories" selected="True" />
+              <Node name="appsettings.json" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.ItemProperties.HousePlantMeasurementsApi PreferredExecutionTarget="/Applications/Firefox.app" />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
