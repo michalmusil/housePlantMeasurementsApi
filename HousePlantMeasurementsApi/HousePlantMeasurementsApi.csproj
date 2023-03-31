@@ -58,6 +58,8 @@
     <None Remove="FCM\" />
     <None Remove="FCM\Credentials\" />
     <None Remove="Services\FCMService\" />
+    <None Remove="Repositories\PlantNotes\" />
+    <None Remove="DTOs\PlantNotes\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="db_data\" />
@@ -85,5 +87,7 @@
     <Folder Include="FCM\" />
     <Folder Include="FCM\Credentials\" />
     <Folder Include="Services\FCMService\" />
+    <Folder Include="Repositories\PlantNotes\" />
+    <Folder Include="DTOs\PlantNotes\" />
   </ItemGroup>
 </Project>
