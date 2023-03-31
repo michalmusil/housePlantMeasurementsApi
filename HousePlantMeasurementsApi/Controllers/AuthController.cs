@@ -11,14 +11,12 @@ namespace HousePlantMeasurementsApi.Controllers
     [Route("/api/v1/auth")]
     public class AuthController: ControllerBase
     {
-        public IConfiguration appConfiguration { get; set; }
         private readonly ILogger logger;
         private readonly IMapper mapper;
         private readonly IAuthService authService;
 
         public AuthController(IConfiguration configuration, ILogger<AuthController> logger, IMapper mapper, IAuthService authService)
         {
-            this.appConfiguration = configuration;
             this.logger = logger;
             this.mapper = mapper;
             this.authService = authService;

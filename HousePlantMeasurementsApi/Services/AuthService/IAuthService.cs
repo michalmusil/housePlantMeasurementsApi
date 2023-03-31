@@ -19,8 +19,6 @@ namespace HousePlantMeasurementsApi.Services.AuthService
         public Task<bool> SignedUserHasRole(ClaimsPrincipal? user, UserRole role);
 
         public Task<bool> SignedUserHasId(ClaimsPrincipal? user, int id);
-
-        public string? GetDeviceMacHash(string macAddress);
         
     }
 }

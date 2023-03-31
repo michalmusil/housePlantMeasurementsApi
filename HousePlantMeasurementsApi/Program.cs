@@ -6,6 +6,7 @@ using HousePlantMeasurementsApi.Repositories.Plants;
 using HousePlantMeasurementsApi.Repositories.Users;
 using HousePlantMeasurementsApi.Services.AuthService;
 using HousePlantMeasurementsApi.Services.FCMService;
+using HousePlantMeasurementsApi.Services.HashService;
 using HousePlantMeasurementsApi.Services.ImageService;
 using HousePlantMeasurementsApi.Services.ValidationHelperService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -92,6 +93,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Dependency injection
 builder.Services.AddSingleton<IFCMService, FCMService>();
+builder.Services.AddScoped<IHashService, HashService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IMeasurementValidator, MeasurementValidator>();

@@ -8,6 +8,7 @@ using HousePlantMeasurementsApi.DTOs.Plant;
 using HousePlantMeasurementsApi.Repositories.Plants;
 using HousePlantMeasurementsApi.Repositories.Users;
 using HousePlantMeasurementsApi.Services.AuthService;
+using HousePlantMeasurementsApi.Services.HashService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,7 @@ namespace HousePlantMeasurementsApi.Controllers
         private readonly IDevicesRepository devicesRepository;
         private readonly IPlantsRepository plantsRepository;
         private readonly IAuthService authService;
+        private readonly IHashService hashService;
 
         public DevicesController(
             ILogger<DevicesController> logger,
@@ -31,7 +33,8 @@ namespace HousePlantMeasurementsApi.Controllers
             IPlantsRepository plantsRepository,
             IUsersRepository usersRepository,
             IDevicesRepository devicesRepository,
-            IAuthService authService)
+            IAuthService authService,
+            IHashService hashService)
         {
             this.logger = logger;
             this.mapper = mapper;
@@ -39,6 +42,7 @@ namespace HousePlantMeasurementsApi.Controllers
             this.devicesRepository = devicesRepository;
             this.plantsRepository = plantsRepository;
             this.authService = authService;
+            this.hashService = hashService;
         }
 
         [HttpGet]
@@ -110,26 +114,24 @@ namespace HousePlantMeasurementsApi.Controllers
                 return StatusCode(403, "This endpoint is restricted for admin users only");
             }
 
-            var deviceWithNewCommunicationIdentifier = await devicesRepository.GetByCommunicationIdentifier(devicePost.CommunicationIdentifier);
+            var communicationIdentifierHash = hashService.HashCommunicationIdentifier(devicePost.CommunicationIdentifier);
+
+            var deviceWithNewCommunicationIdentifier = await devicesRepository.GetByCommunicationIdentifierHash(communicationIdentifierHash);
 
             if (deviceWithNewCommunicationIdentifier != null)
             {
                 return Conflict("Device with this CommunicationIdentifier already exists");
             }
 
-            var newDeviceAuthHash = authService.GetDeviceMacHash(devicePost.MacAddress);
-
-            if (newDeviceAuthHash == null)
-            {
-                return BadRequest("Device CommunicationIdentifier or MAC address are not compatible");
-            }
+            var macHash = hashService.HashMacAddress(devicePost.MacAddress);
 
             Device newDevice = null;
 
             try
             {
                 newDevice = mapper.Map<Device>(devicePost);
-                newDevice.MacHash = newDeviceAuthHash;
+                newDevice.CommunicationIdentifier = communicationIdentifierHash;
+                newDevice.MacAddress = macHash;
                 var savedDevice = await devicesRepository.AddDevice(newDevice);
 
                 if(savedDevice == null)
@@ -151,7 +153,8 @@ namespace HousePlantMeasurementsApi.Controllers
         public async Task<ActionResult<GetDeviceDto>> RegisterDevice(PostRegisterDeviceDto registerObject)
         {
             //Returning generic BadRequest for all failures to minimize feedback on attempts to brute force register devices
-            var foundDevice = await devicesRepository.GetByCommunicationIdentifier(registerObject.CommunicationIdentifier);
+            var communicationIdentifierHash = hashService.HashCommunicationIdentifier(registerObject.CommunicationIdentifier);
+            var foundDevice = await devicesRepository.GetByCommunicationIdentifierHash(communicationIdentifierHash);
 
             if (foundDevice == null)
             {
@@ -159,13 +162,13 @@ namespace HousePlantMeasurementsApi.Controllers
                 return BadRequest();
             }
 
-            var isAuthenticated = BCrypt.Net.BCrypt.Verify(registerObject.MacAddress, foundDevice.MacHash);
+            var macAddressAuthentic = hashService.VerifyMacAddress(registerObject.MacAddress, foundDevice.MacAddress);
 
-            if (!isAuthenticated)
+            if (!macAddressAuthentic)
             {
                 //MAC address of the request is not valid - device not authenticated
-                return BadRequest();
-            }
+                return Ok();
+            } 
 
             if (foundDevice.UserId != null)
             {

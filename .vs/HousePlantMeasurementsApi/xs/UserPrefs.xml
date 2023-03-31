@@ -1,36 +1,35 @@
 ﻿<Properties StartupConfiguration="{C5E3879F-A91D-415A-AFD4-6ADC3D077C28}|Default">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.HousePlantMeasurementsApi PreferredExecutionTarget="/Applications/Firefox.app" />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/Controllers/PlantsController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/Data/Entities/Device.cs">
     <Files>
-      <File FileName="HousePlantMeasurementsApi/Controllers/MeasurementsController.cs" />
-      <File FileName="HousePlantMeasurementsApi/Data/Entities/Plant.cs" />
-      <File FileName="HousePlantMeasurementsApi/Data/Entities/BaseEntity.cs" />
-      <File FileName="HousePlantMeasurementsApi/DTOs/Plant/GetPlantDto.cs" />
-      <File FileName="HousePlantMeasurementsApi/DTOs/Plant/PutPlantDto.cs" />
-      <File FileName="HousePlantMeasurementsApi/DTOs/Plant/PostPlantDto.cs" />
-      <File FileName="HousePlantMeasurementsApi/Controllers/PlantsController.cs" Line="146" Column="1" />
+      <File FileName="HousePlantMeasurementsApi/Controllers/AuthController.cs" Line="29" Column="13" />
+      <File FileName="HousePlantMeasurementsApi/Controllers/UsersController.cs" />
+      <File FileName="HousePlantMeasurementsApi/DTOs/Device/GetDeviceDto.cs" />
+      <File FileName="HousePlantMeasurementsApi/Services/HashService/HashService.cs" Line="32" Column="10" />
+      <File FileName="HousePlantMeasurementsApi/Program.cs" Line="96" Column="57" />
+      <File FileName="HousePlantMeasurementsApi/Services/AuthService/AuthService.cs" Line="49" Column="71" />
+      <File FileName="HousePlantMeasurementsApi/Controllers/MeasurementsController.cs" Line="184" Column="87" />
+      <File FileName="HousePlantMeasurementsApi/Controllers/DevicesController.cs" Line="147" Column="1" />
+      <File FileName="HousePlantMeasurementsApi/Repositories/Devices/DevicesDbRepository.cs" Line="57" Column="1" />
+      <File FileName="HousePlantMeasurementsApi/Repositories/Devices/IDevicesRepository.cs" Line="16" Column="30" />
+      <File FileName="HousePlantMeasurementsApi/Data/Entities/Device.cs" Line="13" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="HousePlantMeasurementsApi" expanded="True">
             <Node name="HousePlantMeasurementsApi" expanded="True">
-              <Node name="Controllers" expanded="True">
-                <Node name="PlantsController.cs" selected="True" />
-              </Node>
-              <Node name="DTOs" expanded="True">
-                <Node name="Plant" expanded="True" />
-              </Node>
+              <Node name="appsettings.json" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.HousePlantMeasurementsApi PreferredExecutionTarget="/Applications/Firefox.app" />
 </Properties>
