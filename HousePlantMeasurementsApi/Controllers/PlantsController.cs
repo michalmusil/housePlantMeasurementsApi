@@ -102,7 +102,7 @@ namespace HousePlantMeasurementsApi.Controllers
 
             if (plantOwner == null)
             {
-                return NotFound(new { message = $"User with id: {plantPost.UserId} was not found" });
+                return NotFound(new { message = $"User with specified id was not found" });
             }
 
             if (!isAdmin && !asksForHimself)

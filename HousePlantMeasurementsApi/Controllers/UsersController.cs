@@ -6,6 +6,7 @@ using HousePlantMeasurementsApi.DTOs;
 using HousePlantMeasurementsApi.DTOs.User;
 using HousePlantMeasurementsApi.Repositories.Users;
 using HousePlantMeasurementsApi.Services.AuthService;
+using HousePlantMeasurementsApi.Services.HashService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -21,17 +22,20 @@ namespace HousePlantMeasurementsApi.Controllers
         private readonly IMapper mapper;
         private readonly IUsersRepository usersRepository;
         private readonly IAuthService authService;
+        private readonly IHashService hashService;
 
         public UsersController(
             ILogger<AuthController> logger,
             IMapper mapper,
             IUsersRepository usersRepository,
-            IAuthService authService)
+            IAuthService authService,
+            IHashService hashService)
         {
             this.logger = logger;
             this.mapper = mapper;
             this.usersRepository = usersRepository;
             this.authService = authService;
+            this.hashService = hashService;
         }
 
 
@@ -87,7 +91,7 @@ namespace HousePlantMeasurementsApi.Controllers
             try
             {
                 newUser = mapper.Map<User>(userPost);
-                newUser.Password = BCrypt.Net.BCrypt.HashPassword(newUser.Password);
+                newUser.Password = hashService.HashUserPassword(newUser.Password);
             }
             catch (Exception ex)
             {
@@ -146,7 +150,7 @@ namespace HousePlantMeasurementsApi.Controllers
             }
             if (userPut.Password != null && userPut.Password.Length > 0)
             {
-                userToUpdate.Password = BCrypt.Net.BCrypt.HashPassword(userPut.Password);
+                userToUpdate.Password = hashService.HashUserPassword(userPut.Password);
             }
 
             var updated = await usersRepository.UpdateUser(userToUpdate);

@@ -7,20 +7,22 @@ using HousePlantMeasurementsApi.Data.Enums;
 using HousePlantMeasurementsApi.DTOs.Auth;
 using HousePlantMeasurementsApi.DTOs.User;
 using HousePlantMeasurementsApi.Repositories.Users;
+using HousePlantMeasurementsApi.Services.HashService;
 using Microsoft.IdentityModel.Tokens;
 
 namespace HousePlantMeasurementsApi.Services.AuthService
 {
     public class AuthService: IAuthService
     {
-
+        private readonly IHashService hashService;
         private readonly IConfiguration appConfiguration;
         private readonly IUsersRepository usersRepository;
 
-        public AuthService(IUsersRepository usersRepository, IConfiguration appConfiguration)
+        public AuthService(IUsersRepository usersRepository, IConfiguration appConfiguration, IHashService hashService)
         {
             this.usersRepository = usersRepository;
             this.appConfiguration = appConfiguration;
+            this.hashService = hashService;
         }
 
 
@@ -31,7 +33,7 @@ namespace HousePlantMeasurementsApi.Services.AuthService
             var user = await usersRepository.GetByEmail(loginDto.Email);
             if (user != null)
             {
-                var passwordValid = BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password);
+                var passwordValid = hashService.VerifyUserPassword(loginDto.Password, user.Password);
                 if (passwordValid)
                 {
                     return user;
@@ -105,16 +107,6 @@ namespace HousePlantMeasurementsApi.Services.AuthService
         {
             return await GetSignedUserId(user) == id;
         }
-
-        public string? GetDeviceMacHash(string macAddress)
-        {
-            var hashed = BCrypt.Net.BCrypt.HashPassword(macAddress);
-            return hashed;
-        }
-
-
-
-
 
         private async Task<UserRole?> GetUserRole(int userId)
         {

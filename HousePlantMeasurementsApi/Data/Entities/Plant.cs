@@ -27,6 +27,7 @@ namespace HousePlantMeasurementsApi.Data.Entities
         [Required]
         public User User { get; set; }
 
+        public List<PlantNote> PlantNotes { get; set; }
 
         public List<Measurement> Measurements { get; set; }
 

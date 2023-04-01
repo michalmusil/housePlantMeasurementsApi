@@ -12,6 +12,7 @@ using HousePlantMeasurementsApi.Repositories.Plants;
 using HousePlantMeasurementsApi.Repositories.Users;
 using HousePlantMeasurementsApi.Services.AuthService;
 using HousePlantMeasurementsApi.Services.FCMService;
+using HousePlantMeasurementsApi.Services.HashService;
 using HousePlantMeasurementsApi.Services.ValidationHelperService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,7 @@ namespace HousePlantMeasurementsApi.Controllers
         private readonly IPlantsRepository plantsRepository;
         private readonly IUsersRepository usersRepository;
         private readonly IAuthService authService;
+        private readonly IHashService hashService;
         private readonly IMeasurementValidator measurementValidator;
         private readonly IFCMService fcmService;
 
@@ -41,6 +43,7 @@ namespace HousePlantMeasurementsApi.Controllers
             IPlantsRepository plantsRepository,
             IUsersRepository usersRepository,
             IAuthService authService,
+            IHashService hashService,
             IMeasurementValidator measurementValidator,
             IFCMService fCMService)
         {
@@ -51,6 +54,7 @@ namespace HousePlantMeasurementsApi.Controllers
             this.plantsRepository = plantsRepository;
             this.usersRepository = usersRepository;
             this.authService = authService;
+            this.hashService = hashService;
             this.measurementValidator = measurementValidator;
             this.fcmService = fCMService;
         }
@@ -176,7 +180,8 @@ namespace HousePlantMeasurementsApi.Controllers
         public async Task<ActionResult<GetPlantDto>> PostNewMeasurement(PostMeasurementDto measurementPost)
         {
             //Response is always 200 OK - so that malicious user can't get feedback on brute force guessing
-            var foundDevice = await devicesRepository.GetByCommunicationIdentifier(measurementPost.DeviceCommunicationIdentifier);
+            var communicationIdentifierHash = hashService.HashCommunicationIdentifier(measurementPost.DeviceCommunicationIdentifier);
+            var foundDevice = await devicesRepository.GetByCommunicationIdentifierHash(communicationIdentifierHash);
 
             if (foundDevice == null)
             {
@@ -184,9 +189,9 @@ namespace HousePlantMeasurementsApi.Controllers
                 return Ok();
             }
 
-            var isAuthenticated = BCrypt.Net.BCrypt.Verify(measurementPost.DeviceMacAddress, foundDevice.MacHash);
+            var macAddressAuthentic = hashService.VerifyMacAddress(measurementPost.DeviceMacAddress, foundDevice.MacAddress);
 
-            if (!isAuthenticated)
+            if (!macAddressAuthentic)
             {
                 //MAC address of the request is not valid - device not authenticated
                 return Ok();

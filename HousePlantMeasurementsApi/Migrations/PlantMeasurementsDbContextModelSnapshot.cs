@@ -32,8 +32,7 @@ namespace HousePlantMeasurementsApi.Migrations
 
                     b.Property<string>("CommunicationIdentifier")
                         .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -41,7 +40,7 @@ namespace HousePlantMeasurementsApi.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("MacHash")
+                    b.Property<string>("MacAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -199,6 +198,34 @@ namespace HousePlantMeasurementsApi.Migrations
                     b.ToTable("Plants");
                 });
 
+            modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.PlantNote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PlantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlantId");
+
+                    b.ToTable("PlantNotes");
+                });
+
             modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -300,6 +327,17 @@ namespace HousePlantMeasurementsApi.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.PlantNote", b =>
+                {
+                    b.HasOne("HousePlantMeasurementsApi.Data.Entities.Plant", "Plant")
+                        .WithMany("PlantNotes")
+                        .HasForeignKey("PlantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Plant");
+                });
+
             modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.Measurement", b =>
                 {
                     b.Navigation("MeasurementValues");
@@ -310,6 +348,8 @@ namespace HousePlantMeasurementsApi.Migrations
                     b.Navigation("MeasurementValueLimits");
 
                     b.Navigation("Measurements");
+
+                    b.Navigation("PlantNotes");
                 });
 
             modelBuilder.Entity("HousePlantMeasurementsApi.Data.Entities.User", b =>

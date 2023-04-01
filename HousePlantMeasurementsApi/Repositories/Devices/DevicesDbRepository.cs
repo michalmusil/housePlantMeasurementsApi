@@ -37,10 +37,10 @@ namespace HouseDeviceMeasurementsApi.Repositories.Devices
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<Device?> GetByCommunicationIdentifier(string communicationIdentifier)
+        public async Task<Device?> GetByCommunicationIdentifierHash(string communicationIdentifierHash)
         {
             return await dbContext.Devices
-                .Where(d => d.CommunicationIdentifier == communicationIdentifier)
+                .Where(d => d.CommunicationIdentifier == communicationIdentifierHash)
                 .FirstOrDefaultAsync();
         }
 

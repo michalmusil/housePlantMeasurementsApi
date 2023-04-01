@@ -10,9 +10,10 @@ namespace HousePlantMeasurementsApi.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Device> Devices { get; set; }
         public DbSet<Plant> Plants { get; set; }
-        public DbSet<MeasurementValueLimit> MeasurementValueLimits { get; set; }
+        public DbSet<PlantNote> PlantNotes { get; set; }
         public DbSet<Measurement> Measurements { get; set; }
         public DbSet<MeasurementValue> MeasurementValues { get; set; }
+        public DbSet<MeasurementValueLimit> MeasurementValueLimits { get; set; }
 
         public PlantMeasurementsDbContext(DbContextOptions<PlantMeasurementsDbContext> options)
             : base(options)
@@ -39,6 +40,12 @@ namespace HousePlantMeasurementsApi.Data
                 .HasOne(m => m.Plant)
                 .WithMany(p => p.Measurements)
                 .HasForeignKey(m => m.PlantId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PlantNote>()
+                .HasOne(n => n.Plant)
+                .WithMany(p => p.PlantNotes)
+                .HasForeignKey(n => n.PlantId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Plant>()

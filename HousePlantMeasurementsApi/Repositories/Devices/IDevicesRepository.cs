@@ -9,7 +9,7 @@ namespace HouseDeviceMeasurementsApi.Repositories.Devices
 
         public Task<Device?> GetById(int id);
 
-        public Task<Device?> GetByCommunicationIdentifier(string communicationIdentifier);
+        public Task<Device?> GetByCommunicationIdentifierHash(string communicationIdentifierHash);
 
         public Task<IEnumerable<Device>> GetByUserId(int userId);
 
