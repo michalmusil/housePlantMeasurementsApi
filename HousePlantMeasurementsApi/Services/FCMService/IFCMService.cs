@@ -5,7 +5,7 @@ namespace HousePlantMeasurementsApi.Services.FCMService
 {
 	public interface IFCMService
 	{
-        public Task<bool> SendNotification(string notificationToken, string title, string message, string plantName);
+        public Task<bool> SendPlantNotification(string notificationToken, Plant plant, Measurement measurement);
     }
 }
 

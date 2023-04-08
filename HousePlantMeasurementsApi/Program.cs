@@ -92,11 +92,11 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
 // Dependency injection
+builder.Services.AddSingleton<IMeasurementValidator, MeasurementValidator>();
 builder.Services.AddSingleton<IFCMService, FCMService>();
 builder.Services.AddScoped<IHashService, HashService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IImageService, ImageService>();
-builder.Services.AddScoped<IMeasurementValidator, MeasurementValidator>();
 builder.Services.AddScoped<IUsersRepository, UsersDbRepository>();
 builder.Services.AddScoped<IPlantsRepository, PlantsDbRepository>();
 builder.Services.AddScoped<IPlantNotesRepository, PlantNotesRepository>();

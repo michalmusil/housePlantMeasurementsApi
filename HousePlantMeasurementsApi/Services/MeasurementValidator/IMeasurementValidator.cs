@@ -13,6 +13,8 @@ namespace HousePlantMeasurementsApi.Services.ValidationHelperService
         public bool AreMeasurementLimitsValid(List<MeasurementValueLimit> measurementValueLimits);
 
         public bool IsMeasurementWithinLimits(Measurement measurement, List<MeasurementValueLimit> limits);
+
+        public IEnumerable<MeasurementType> GetInvalidMeasurementTypes(Measurement measurement, List<MeasurementValueLimit> limits);
     }
 }
 

@@ -72,6 +72,30 @@ namespace HousePlantMeasurementsApi.Services.ValidationHelperService
 
             return true;
         }
+
+        public IEnumerable<MeasurementType> GetInvalidMeasurementTypes(Measurement measurement, List<MeasurementValueLimit> limits)
+        {
+            var invalidMeasurementTypes = new List<MeasurementType>();
+            foreach (var limit in limits)
+            {
+                var type = limit.Type;
+                if (!IsMeasurementTypeValid(type))
+                {
+                    continue;
+                }
+                var valueOfType = measurement.getValueByType(type);
+                if (valueOfType == null)
+                {
+                    continue;
+                }
+                if (valueOfType > limit.UpperLimit || valueOfType < limit.LowerLimit)
+                {
+                    invalidMeasurementTypes.Add(type);
+                }
+            }
+
+            return invalidMeasurementTypes;
+        }
     }
 }
 
