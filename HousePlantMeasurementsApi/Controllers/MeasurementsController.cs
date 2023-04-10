@@ -235,14 +235,11 @@ namespace HousePlantMeasurementsApi.Controllers
                !measurementValidator.IsMeasurementWithinLimits(savedMeasurement, plant.MeasurementValueLimits))
             {
                 var notificationToken = ownerOfMeasurement.NotificationToken;
-                var title = "Plant is not feeling well";
-                var message = plant.Name + " has surpassed set measurement limits.";
-
-                var sucessfulNotification = await fcmService.SendNotification(
+                
+                var sucessfulNotification = await fcmService.SendPlantNotification(
                     notificationToken: notificationToken,
-                    title: title,
-                    message: message,
-                    plantName: plant.Name);
+                    plant: plant,
+                    measurement: savedMeasurement);
             }
 
             return Ok(mapper.Map<GetMeasurementDto>(savedMeasurement));

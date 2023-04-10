@@ -4,3 +4,7 @@ appsettings.*
 docker-compose.yml
 HousePlantMeasurementsApi/Resources/PlantImages
 HousePlantMeasurementsApi/FCM/Credentials/*
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
