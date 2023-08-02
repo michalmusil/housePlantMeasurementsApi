@@ -1,10 +1,10 @@
 # Prototype of an application for monitoring houseplant environment - REST API
 This is a 1/3 of a complete project solution for a bachelor's thesis. The thesis (and the underlying project) deals with designing and implementing multitier application for continuous monitoring of houseplant's environment (ambient temperature, light intensity and soil moisture). The application is meant to be used by multiple users with multiple plants and measuring devices.
 
-# The functional parts of the projects
+# The functional parts of the project
 1. REST API with database for application logic (ASP.NET Core with Entity Framework Core): https://github.com/michalmusil/housePlantMeasurementsApi
 2. Android navive app for presenting the data to users (Kotlin, Jetpack Compose): https://github.com/michalmusil/plant_monitor
-3. ESP 8266 code for the device measuring the houseplant environment (C++ in Arduino IDE): https://github.com/michalmusil/housePlantMeasuringDevice
+3. ESP 8266 code for the device measuring the houseplant environment (C++ in Arduino IDE): https://github.com/michalmusil/housePlantSensor.git
 
 To make the project work as a whole, you have to get all of the parts working together.
 

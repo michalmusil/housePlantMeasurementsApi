@@ -1,19 +1,23 @@
 ﻿<Properties StartupConfiguration="{C5E3879F-A91D-415A-AFD4-6ADC3D077C28}|Default">
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.ItemProperties.HousePlantMeasurementsApi PreferredExecutionTarget="/Applications/Firefox.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/DTOs/Plant/GetPlantDto.cs">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workbench ActiveDocument="HousePlantMeasurementsApi/Data/Enums/UserRole.cs">
     <Files>
-      <File FileName="HousePlantMeasurementsApi/Data/Entities/User.cs" />
+      <File FileName="HousePlantMeasurementsApi/Data/Entities/User.cs" Line="20" Column="17" />
       <File FileName="HousePlantMeasurementsApi/Data/Entities/Device.cs" />
       <File FileName="HousePlantMeasurementsApi/Controllers/UsersController.cs" />
       <File FileName="HousePlantMeasurementsApi/Repositories/Plants/PlantsDbRepository.cs" />
-      <File FileName="HousePlantMeasurementsApi/Services/FCMService/FCMService.cs" />
+      <File FileName="HousePlantMeasurementsApi/Services/FCMService/FCMService.cs" Line="1" Column="1" />
       <File FileName="HousePlantMeasurementsApi/Repositories/PlantNotes/PlantNotesRepository.cs" />
       <File FileName="HousePlantMeasurementsApi/Controllers/PlantsController.cs" />
       <File FileName="HousePlantMeasurementsApi/DTOs/Plant/GetPlantDto.cs" Line="1" Column="1" />
+      <File FileName="HousePlantMeasurementsApi/Services/FCMService/IFCMService.cs" Line="1" Column="1" />
+      <File FileName="HousePlantMeasurementsApi/Program.cs" Line="1" Column="1" />
+      <File FileName="HousePlantMeasurementsApi/appsettings.Development.json" Line="1" Column="1" />
+      <File FileName="HousePlantMeasurementsApi/Data/Enums/UserRole.cs" Line="4" Column="17" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -22,18 +26,17 @@
             <Node name="HousePlantMeasurementsApi" expanded="True">
               <Node name="Data" expanded="True">
                 <Node name="Entities" expanded="True" />
-              </Node>
-              <Node name="DTOs" expanded="True">
-                <Node name="Plant" expanded="True">
-                  <Node name="GetPlantDto.cs" selected="True" />
+                <Node name="Enums" expanded="True">
+                  <Node name="UserRole.cs" selected="True" />
                 </Node>
               </Node>
+              <Node name="appsettings.json" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
