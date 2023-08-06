@@ -12,7 +12,7 @@ namespace HousePlantMeasurementsApi.Services.FCMService
         private readonly IMeasurementValidator measurementValidator;
 
         private readonly string pathToCredentials = "FCM/Credentials/";
-        private readonly string credentialsFileName = "plant-monitor-mobile-app-firebase-adminsdk-xdfd6-bb86cfc257.json";
+        private readonly string credentialsFileName = "firebase_key.json";
         private readonly string titleKey = "title";
         private readonly string messageKey = "message";
         private readonly string plantNameKey = "plant_name";
